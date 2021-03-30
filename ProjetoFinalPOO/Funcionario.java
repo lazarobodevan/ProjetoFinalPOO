@@ -1,10 +1,11 @@
 package projetofinalpoo;
+import projetofinalpoo.Vendas;
 public class Funcionario {
     //Atributos
     private String nome;
     private String CPF;
     private int idade;
-    
+    public float salario;
     //Construtor
     public Funcionario(String nome, String CPF, int idade) {
         this.nome = nome;
@@ -12,6 +13,12 @@ public class Funcionario {
         this.idade = idade;
     }
     
+    Vendas V1 = new Vendas(100.00f, "jogo");
+    public void comissoFunc(float V1, float salario, float soma, String nome){
+        this.nome = nome;
+        this.salario = salario;
+        soma = (float) ((V1*0.2) + salario);
+    }
     //Getters e Setters
     public String getNome() {
         return nome;
