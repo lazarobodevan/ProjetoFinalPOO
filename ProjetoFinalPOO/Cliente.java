@@ -1,15 +1,16 @@
 package projetofinalpoo;
 public class Cliente {
     //Atributos
-    private String nome;
+    private String nome, cpf;
     private int idade;
     Eletronicos el;
     Jogos jg;
     
     //Construtor
-    public Cliente(String nome, int idade) {
+    public Cliente(String nome, int idade, String cpf) {
         this.nome = nome;
         this.idade = idade;
+        this.cpf = cpf;
     }
     
     //Getters e Setters
@@ -28,7 +29,14 @@ public class Cliente {
     public void setIdade(int idade) {
         this.idade = idade;
     }
+
+    public void setCpf(String cpf){
+        this.cpf = cpf; //depois introduzir funcao de validacao
+    }
     
+    public String getCpf(){
+        return this.cpf;
+    }
     
     
 }
