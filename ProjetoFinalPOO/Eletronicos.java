@@ -1,4 +1,7 @@
-package projetofinalpoo;
+package projetofinal;
+
+import projetofinal.CategoriaEletronico;
+
 public class Eletronicos {
     //Atributos
     private String nome;

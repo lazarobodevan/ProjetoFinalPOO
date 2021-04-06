@@ -1,48 +1,37 @@
-package projetofinalpoo;
-import projetofinalpoo.Vendas;
+package projetofinal;
+import java.time.Year;
+import java.util.Calendar;
+import projetofinal.Vendas;
 public class Funcionario {
     //Atributos
     private String nome;
     private String CPF;
-    private int idade;
+    private Calendar dtNasc;
     public float salario;
+    public int matricula;
+    public int idade;
+    
     //Construtor
-    public Funcionario(String nome, String CPF, int idade) {
+    public Funcionario(String nome, String CPF, Calendar dtNasc, float salario, int matricula) {
         this.nome = nome;
         this.CPF = CPF;
-        this.idade = idade;
-    }
-    
-    Vendas V1 = new Vendas(100.00f, "jogo");
-    public void comissoFunc(float V1, float salario, float soma, String nome){
-        this.nome = nome;
+        this.dtNasc = dtNasc;
+        this.matricula = matricula;
         this.salario = salario;
-        soma = (float) ((V1*0.2) + salario);
-    }
-    //Getters e Setters
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCPF() {
-        return CPF;
-    }
-
-    public void setCPF(String CPF) {
-        this.CPF = CPF;
-    }
-
-    public int getIdade() {
-        return idade;
-    }
-
-    public void setIdade(int idade) {
-        this.idade = idade;
+        
     }
     
+    public int calculaIdade(Calendar data){
+        return Year.now().getValue() - this.dtNasc.get(Calendar.YEAR);
+    }
     
+    public double comissaoFuncionario(double valorVenda, double porcentagem){
+        return valorVenda * porcentagem;
+    }
+    
+    public void cadastraFuncionario(String nome, String CPF, Calendar data, float salario, int matricula){
+        Funcionario f1 = new Funcionario(nome, CPF, data, salario, matricula);
+        System.out.println("FUNCIONARIO CADASTRADO COM SUCESSO!");
+    }
+   
 }

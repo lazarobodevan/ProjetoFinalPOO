@@ -1,31 +1,23 @@
-package projetofinalpoo;
-public class Caixa {
-    //Atributos
-    private float valor_recebido;
-    private float troco;
-    Funcionario func;
-    
-    //Construtor
-    public Caixa(float valor_recebido, float troco) {
-        this.valor_recebido = valor_recebido;
-        this.troco = troco;
+package projetofinal;
+
+import java.util.Calendar;
+public class Caixa extends Funcionario{
+ 
+    public Caixa(String nome, String CPF, Calendar dtNasc, float salario, int matricula){
+        super(nome, CPF, dtNasc, salario, matricula);
     }
     
-    //Getters e Setters
-    public float getValor_recebido() {
-        return valor_recebido;
+    public double calculaTroco(double valorVenda, double dinheiro){
+        return dinheiro - valorVenda;
     }
-
-    public void setValor_recebido(float valor_recebido) {
-        this.valor_recebido = valor_recebido;
+    
+    public void realizaVenda(){
+        
     }
-
-    public float getTroco() {
-        return troco;
+    
+    public void cadastraCliente(){
+        
     }
-
-    public void setTroco(float troco) {
-        this.troco = troco;
-    }
+    
     
 }

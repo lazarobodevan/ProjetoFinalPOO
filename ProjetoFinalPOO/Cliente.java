@@ -1,10 +1,10 @@
-package projetofinalpoo;
+package projetofinal;
 public class Cliente {
     //Atributos
     private String nome, cpf;
     private int idade;
     Eletronicos el;
-    Jogos jg;
+    Jogo jg;
     
     //Construtor
     public Cliente(String nome, int idade, String cpf) {

@@ -1,4 +1,4 @@
-package projetofinalpoo;
+package projetofinal;
 public class MarcaEletronico {
     //Atributos
     private String marca;
