@@ -26,10 +26,10 @@ public class Produto {
     
     @Override
     public String toString(){
-        return "Nome: "+this.nome
-                +"Preco: "+this.preco
-                +"Codigo: "+this.codigo
-                +"Estoque: "+this.qtdEstoque;
+        return "\nNome: "+this.nome
+                +"\nPreco: "+this.preco
+                +"\nCodigo: "+this.codigo
+                +"\nEstoque: "+this.qtdEstoque;
     }
     
     public double getPreco(){

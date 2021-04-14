@@ -4,18 +4,15 @@
  * and open the template in the editor.
  */
 package projetofinalpoo;
-
+import br.ufv.visao.TelaProduto;
 /**
  *
  * @author Lázaro
  */
 public class ProjetoFinalPOO {
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        TelaProduto telaProduto = new TelaProduto();
+        telaProduto.telaPrincipal();
     }
     
 }
