@@ -8,10 +8,7 @@ import br.ufv.modelo.Produto;
 import br.ufv.persistencia.ProdutoDAO;
 import java.util.ArrayList;
 
-/**
- *
- * @author Lázaro
- */
+
 public class ControleProduto {
     ProdutoDAO produtoDAO;
     
