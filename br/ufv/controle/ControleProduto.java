@@ -7,6 +7,7 @@ package br.ufv.controle;
 import br.ufv.modelo.Produto;
 import br.ufv.persistencia.ProdutoDAO;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,9 +25,10 @@ public class ControleProduto {
         
         Produto pExistente = produtoDAO.pesquisaProdutoCod(codigo);
         if(pExistente != null){
-            System.err.println("Produto já existente!");
+            JOptionPane.showMessageDialog (null, "Produto já existente!");
         }else{
             produtoDAO.cadastraProduto(p);
+            JOptionPane.showMessageDialog (null, "Produto cadastrado!");
         }
         
     }
@@ -39,5 +41,9 @@ public class ControleProduto {
             produtosStr.add(produtos.toString());
         }
         return produtosStr;
+    }
+    
+    public ArrayList<Produto> obterProdutosCadastrados(){
+        return produtoDAO.listarProdutosCadastrados();
     }
 }

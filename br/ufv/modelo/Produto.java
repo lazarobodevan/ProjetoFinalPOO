@@ -26,9 +26,9 @@ public class Produto {
     
     @Override
     public String toString(){
-        return "\nNome: "+this.nome
+        return "\nCodigo: "+this.codigo
+                +"\nNome: "+this.nome
                 +"\nPreco: "+this.preco
-                +"\nCodigo: "+this.codigo
                 +"\nEstoque: "+this.qtdEstoque;
     }
     
@@ -42,6 +42,18 @@ public class Produto {
     
     public int qtdEstoque(){
         return this.qtdEstoque;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public int getQtdEstoque() {
+        return qtdEstoque;
     }
 
 }

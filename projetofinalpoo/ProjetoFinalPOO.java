@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 package projetofinalpoo;
-import br.ufv.visao.TelaCliente;
-import br.ufv.visao.TelaProduto;
+import br.ufv.visaoGUI.*;
 /**
  *
  * @author Lázaro
@@ -14,8 +13,9 @@ public class ProjetoFinalPOO {
     public static void main(String[] args) {
         //TelaProduto telaProduto = new TelaProduto();
         //telaProduto.telaPrincipal();
-        TelaCliente telaCliente = new TelaCliente();
-        telaCliente.telaPrincipal();
+        //TelaCliente telaCliente = new TelaCliente();
+        //telaCliente.telaPrincipal();
+        TelaProduto prod = new TelaProduto();
     }
     
 }
