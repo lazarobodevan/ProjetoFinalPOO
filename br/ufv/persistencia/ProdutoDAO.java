@@ -13,8 +13,8 @@ import java.util.Scanner;
  * @author Lázaro
  */
 public class ProdutoDAO {
-    ArrayList<Produto> produtos;
-    Scanner leitor;
+    private static ArrayList<Produto> produtos;
+    private Scanner leitor;
     
     public ProdutoDAO(){
         produtos = new ArrayList<>();
@@ -36,7 +36,7 @@ public class ProdutoDAO {
         return null;
     }
     
-    public ArrayList<Produto> listarProdutosCadastrados(){
-        return this.produtos;
+    public static ArrayList<Produto> listarProdutosCadastrados(){
+        return produtos;
     }
 }

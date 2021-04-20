@@ -14,8 +14,8 @@ import java.util.Scanner;
  * @author Pedro
  */
 public class ClienteDAO {
-    ArrayList<Cliente> clientes;
-    Scanner leitor;
+    private static ArrayList<Cliente> clientes;
+    private Scanner leitor;
     
     public ClienteDAO(){
         clientes = new ArrayList<>();
@@ -37,7 +37,7 @@ public class ClienteDAO {
         return null;
     }
     
-    public ArrayList<Cliente> listarClientesCadastrados(){
-        return this.clientes;
+    public static ArrayList<Cliente> listarClientesCadastrados(){
+        return clientes;
     }
 }
