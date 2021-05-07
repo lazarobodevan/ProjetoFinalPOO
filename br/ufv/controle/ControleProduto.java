@@ -20,30 +20,46 @@ public class ControleProduto {
         produtoDAO = new ProdutoDAO();
     }
     
-    public void cadastraProduto(String nome, double preco, String categoria, int codigo, int qtdEstoque){
+    public boolean cadastraProduto(String nome, double preco, String categoria, int codigo, int qtdEstoque){
         Produto p = new Produto(nome, preco, categoria, codigo, qtdEstoque);
         
         Produto pExistente = produtoDAO.pesquisaProdutoCod(codigo);
         if(pExistente != null){
-            JOptionPane.showMessageDialog (null, "Produto já existente!");
+            return false;
         }else{
             produtoDAO.cadastraProduto(p);
-            JOptionPane.showMessageDialog (null, "Produto cadastrado!");
+            return true;
         }
         
     }
     
-    public ArrayList<String> listarProdutosCadastrados(){
-        ArrayList<Produto> produtos = produtoDAO.listarProdutosCadastrados();
-        ArrayList<String> produtosStr = new ArrayList<>();
-        
-        for(Produto p: produtos){
-            produtosStr.add(produtos.toString());
-        }
-        return produtosStr;
-    }
-    
-    public ArrayList<Produto> obterProdutosCadastrados(){
+    public ArrayList<Produto> listarProdutosCadastrados(){
         return produtoDAO.listarProdutosCadastrados();
+    }
+    
+    
+    public Produto pesquisaProdutoCod(int cod){
+        if(cod < 0){
+            System.err.println("Erro.");
+            return null;
+        }
+        return produtoDAO.pesquisaProdutoCod(cod);
+        //produtoDAO.pesquisaProdutoCod(cod);
+    }
+    
+    public boolean atualizarProduto(String nome, double preco, String categoria, int codigo, int qtdEstoque){
+        Produto p = new Produto(nome, preco, categoria, codigo, qtdEstoque);
+        if(pesquisaProdutoCod(codigo) == null)
+            return false;
+        produtoDAO.atualizarProduto(p);
+        return true;
+    }
+    
+    public ArrayList<Produto> filtrarNome(String nomeParam){
+        return produtoDAO.filtrarNome(nomeParam);
+    }
+    
+    public boolean deletarProduto(int codigo){
+        return produtoDAO.deletarProduto(codigo);
     }
 }

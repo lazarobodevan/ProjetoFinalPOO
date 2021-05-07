@@ -19,23 +19,26 @@ public class TelaListar extends javax.swing.JFrame {
     /**
      * Creates new form TelaListar
      */
-    public TelaListar(ControleProduto controleProduto) {
-        controleProduto = new ControleProduto();
-        initComponents();
-        setVisible(true);
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        ArrayList<Produto> produtos = controleProduto.obterProdutosCadastrados();
-        
-        for(Produto p: produtos){
-            String codigo = String.valueOf(p.getCodigo());
-            String nome = p.getNome();
-            String preco = String.valueOf(p.getPreco());
-            String qtdEstoque = String.valueOf(p.getQtdEstoque());
-            String categoria = p.getCategoria();
-
-            Object[] row = {codigo, nome, preco, qtdEstoque, categoria};
-             model.addRow(row);
-        }
+    private ControleProduto controleProduto;
+    public TelaListar() {
+//        controleProduto = new ControleProduto();
+//        initComponents();
+//        setVisible(true);
+//        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//        ArrayList<Produto> produtos = controleProduto.listarProdutosCadastrados();
+//        System.out.println(model.getRowCount());
+//       
+//        TelaListar tela = new TelaListar();
+//        for(Produto p: produtos){
+//            String codigo = String.valueOf(p.getCodigo());
+//            String nome = p.getNome();
+//            String preco = String.valueOf(p.getPreco());
+//            String qtdEstoque = String.valueOf(p.getQtdEstoque());
+//            String categoria = p.getCategoria();
+//
+//            Object[] row = {codigo, nome, preco, qtdEstoque, categoria};
+//             model.addRow(row);
+//        }
     }
 
     /**
@@ -54,13 +57,13 @@ public class TelaListar extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -70,7 +73,7 @@ public class TelaListar extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -116,7 +119,7 @@ public class TelaListar extends javax.swing.JFrame {
         ControleProduto controleProduto = new ControleProduto();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaListar(controleProduto).setVisible(true);
+                new TelaListar().setVisible(true);
             }
         });
     }

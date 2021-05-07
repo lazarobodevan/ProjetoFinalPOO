@@ -2,14 +2,14 @@ package br.ufv.modelo;
 public class Cliente {
     private String nome;
     private int cpf;
-    private int idade;
+    private String dtNasc;
     private int codigo;
     private String telefone;
 
-    public Cliente(String nome, int cpf, int idade, int codigo, String telefone) {
+    public Cliente(String nome, int cpf, String dtNasc, int codigo, String telefone) {
         this.nome = nome;
         this.cpf = cpf;
-        this.idade = idade;
+        this.dtNasc = dtNasc;
         this.codigo = codigo;
         this.telefone = telefone;
     }
@@ -28,8 +28,8 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" + "\nnome = " + this.nome + " \ncpf = " + this.cpf 
-                + " \nidade = " + this.idade + " \ncodigo = " + this.codigo 
-                + " \ntelefone = " + this.telefone + '}';
+        return "Cliente" + "\nNome = " + this.nome + " \nCPF = " + this.cpf 
+                + " \nData de Nascimento = " + this.dtNasc + " \nCodigo = " + this.codigo 
+                + " \nTelefone = " + this.telefone ;
     }   
 }

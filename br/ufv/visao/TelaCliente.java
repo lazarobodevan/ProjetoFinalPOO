@@ -62,13 +62,13 @@ public class TelaCliente {
         String nome = s.next();
         System.out.print("Cpf: ");
         int cpf = s.nextInt(); 
-        System.out.print("Idade: ");
-        int idade = s.nextInt();
+        System.out.print("Data de Nascimento: ");
+        String dtNasc = s.next();
         System.out.print("Codigo: ");
         int codigo = s.nextInt();
         System.out.print("Telefne: ");
         String telefone = s.next();
          
-        controleCliente.cadastrarCliente(nome, cpf, idade, codigo, telefone);
+        controleCliente.cadastrarCliente(nome, cpf, dtNasc, codigo, telefone);
     } 
 }

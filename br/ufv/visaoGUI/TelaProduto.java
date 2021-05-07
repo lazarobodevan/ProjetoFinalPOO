@@ -7,7 +7,13 @@ package br.ufv.visaoGUI;
 
 import br.ufv.controle.ControleProduto;
 import br.ufv.modelo.Produto;
+import br.ufv.persistencia.ConexaoMySQL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,11 +27,16 @@ public class TelaProduto extends javax.swing.JFrame {
      * Creates new form TelaCliente
      */
     private ControleProduto controleProduto;
+    private Connection conexao = new ConexaoMySQL().getConexaoMySQL();
+    
     public TelaProduto() {
         initComponents();
         controleProduto = new ControleProduto();
         setVisible(true);
+        this.setLocationRelativeTo(null);
+        System.out.println(conexao.toString());
         txtcodigo.setText(String.valueOf(controleProduto.listarProdutosCadastrados().size()+1));
+        
     }
 
     /**
@@ -37,6 +48,7 @@ public class TelaProduto extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        radiogpFiltros = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         txtnome = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -56,6 +68,10 @@ public class TelaProduto extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        rbtnFiltroNome = new javax.swing.JRadioButton();
+        rbtnFiltroCod = new javax.swing.JRadioButton();
+        txtFiltro = new javax.swing.JTextField();
+        rbtnSemFiltro = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,7 +93,7 @@ public class TelaProduto extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 204));
-        jLabel5.setText("Quantidade de protduto");
+        jLabel5.setText("Quantidade em estoque");
 
         tblListar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -95,10 +111,16 @@ public class TelaProduto extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblListar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblListarMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblListar);
 
         btncadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/mais.png"))); // NOI18N
         btncadastro.setToolTipText("Cadastro");
+        btncadastro.setLabel("");
         btncadastro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btncadastroActionPerformed(evt);
@@ -115,9 +137,19 @@ public class TelaProduto extends javax.swing.JFrame {
 
         btndeletar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/deletar.png"))); // NOI18N
         btndeletar.setToolTipText("Deletar");
+        btndeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndeletarActionPerformed(evt);
+            }
+        });
 
         btnlistar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pesquisa.png"))); // NOI18N
         btnlistar.setToolTipText("Listar");
+        btnlistar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnlistarActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 0, 0));
@@ -131,6 +163,16 @@ public class TelaProduto extends javax.swing.JFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/jogos.png"))); // NOI18N
 
+        radiogpFiltros.add(rbtnFiltroNome);
+        rbtnFiltroNome.setText("Filtrar nome");
+
+        radiogpFiltros.add(rbtnFiltroCod);
+        rbtnFiltroCod.setText("Filtrar codigo");
+
+        radiogpFiltros.add(rbtnSemFiltro);
+        rbtnSemFiltro.setSelected(true);
+        rbtnSemFiltro.setText("Sem filtro");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -140,19 +182,14 @@ public class TelaProduto extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(72, 72, 72)
-                                        .addComponent(jLabel4))
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(95, 95, 95)
-                                .addComponent(jLabel2)))
+                                .addGap(164, 164, 164)
+                                .addComponent(jLabel2))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -170,13 +207,24 @@ public class TelaProduto extends javax.swing.JFrame {
                         .addComponent(btndeletar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnlistar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel8)))
-                .addContainerGap(54, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(76, 76, 76)
+                                .addComponent(jLabel8))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(rbtnSemFiltro)
+                                    .addComponent(rbtnFiltroCod, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(rbtnFiltroNome))))
+                        .addContainerGap(15, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(102, 102, 102))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,11 +232,22 @@ public class TelaProduto extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(jLabel8)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(jLabel8)
+                                .addGap(94, 94, 94)
+                                .addComponent(rbtnSemFiltro)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36)))
+                        .addComponent(rbtnFiltroNome)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(rbtnFiltroCod)
+                        .addGap(4, 4, 4)
+                        .addComponent(txtFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -210,13 +269,13 @@ public class TelaProduto extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtqtd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btneditar, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btncadastro, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btndeletar, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnlistar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(40, 40, 40)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btneditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btncadastro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnlistar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btndeletar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(40, 40, 40)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -225,37 +284,146 @@ public class TelaProduto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastroActionPerformed
-        int codigo = Integer.parseInt(txtcodigo.getText());
-        String nome = txtnome.getText();
-        Double preco = Double.parseDouble(txtpreco.getText());
-        int qtdEstoque = Integer.parseInt(txtqtd.getText());
-        String categoria = txtcategoria.getText();
         
-        controleProduto.cadastraProduto(nome, preco, categoria, codigo, qtdEstoque);
-        txtcodigo.setText(String.valueOf(controleProduto.listarProdutosCadastrados().size()+1));
-        txtnome.setText("");
-        txtcategoria.setText("");
-        txtpreco.setText("");
-        txtqtd.setText("");
+        try{
+            int codigo = Integer.parseInt(txtcodigo.getText());
+            String nome = txtnome.getText();
+            Double preco = Double.parseDouble(txtpreco.getText());
+            int qtdEstoque = Integer.parseInt(txtqtd.getText());
+            String categoria = txtcategoria.getText();
+            boolean r = controleProduto.cadastraProduto(nome, preco, categoria, codigo, qtdEstoque);
+            if(r)
+                JOptionPane.showMessageDialog(null, "Cadastro efetuado!", "Erro",JOptionPane.INFORMATION_MESSAGE);
+            else
+                JOptionPane.showMessageDialog(null, "Código já existente", "Erro",JOptionPane.WARNING_MESSAGE);
+
+            txtcodigo.setText(String.valueOf(controleProduto.listarProdutosCadastrados().size()+1));
+            txtnome.setText("");
+            txtcategoria.setText("");
+            txtpreco.setText("");
+            txtqtd.setText("");
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(null,  "Formato inválido!\nRemova os espaços dos valores numéricos!"
+                    + "\nVerifique se os campos estão preenchidos corretamente.", "Erro",JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btncadastroActionPerformed
 
     private void btneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tblListar.getModel();
-        ArrayList<Produto> produtos = controleProduto.obterProdutosCadastrados();
-        
-        for(Produto p: produtos){
-            String codigo = String.valueOf(p.getCodigo());
-            String nome = p.getNome();
-            String preco = String.valueOf(p.getPreco());
-            String qtdEstoque = String.valueOf(p.getQtdEstoque());
-            String categoria = p.getCategoria();
+        txtcodigo.setEditable(true);
 
-            Object[] row = {codigo, nome, preco, qtdEstoque, categoria};
-             model.addRow(row);
+        try{
+            int codigo = Integer.parseInt(txtcodigo.getText());
+            String nome = txtnome.getText();
+            Double preco = Double.parseDouble(txtpreco.getText());
+            int qtdEstoque = Integer.parseInt(txtqtd.getText().replaceFirst(" ", ""));
+            String categoria = txtcategoria.getText();
+            boolean r = controleProduto.atualizarProduto(nome, preco, categoria, codigo, qtdEstoque);
+
+            if(r){
+                rbtnSemFiltro.setSelected(true);
+                btnlistar.doClick();
+                JOptionPane.showMessageDialog(null, "Atualização concluída!", "Atualização",JOptionPane.INFORMATION_MESSAGE);
+            }
+            else
+                JOptionPane.showMessageDialog(null, "Ocorreu um erro!\n"
+                        + "Verifique se o produto existe.\nSe existir, verifique se as entradas"
+                        + "\nestão corretas, sem espaços que não se aplicam.", "Erro",JOptionPane.WARNING_MESSAGE);
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(null, "Formato inválido!\nRemova os espaços dos valores numéricos!"
+                    + "\nVerifique se os campos estão preenchidos corretamente.", "Erro",JOptionPane.WARNING_MESSAGE);
         }
-        TelaListar listar = new TelaListar(controleProduto);
+        
         
     }//GEN-LAST:event_btneditarActionPerformed
+
+    private void btnlistarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlistarActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tblListar.getModel();
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+        
+        if(rbtnSemFiltro.isSelected()){
+        
+            ArrayList<Produto> produtos = controleProduto.listarProdutosCadastrados();
+
+            //TelaListar tela = new TelaListar();
+            for(Produto p: produtos){
+                String codigo = String.valueOf(p.getCodigo());
+                String nome = p.getNome();
+                String preco = String.valueOf(p.getPreco());
+                String qtdEstoque = String.valueOf(p.getQtdEstoque());
+                String categoria = p.getCategoria();
+
+                Object[] row = {codigo, nome, preco, qtdEstoque, categoria};
+                model.addRow(row);
+            }
+        }else if(rbtnFiltroCod.isSelected()){
+            try{
+                Produto p = controleProduto.pesquisaProdutoCod(Integer.parseInt(txtFiltro.getText()));
+                String codigo = String.valueOf(p.getCodigo());
+                String nome = p.getNome();
+                String preco = String.valueOf(p.getPreco());
+                String qtdEstoque = String.valueOf(p.getQtdEstoque());
+                String categoria = p.getCategoria();
+
+                Object[] row = {codigo, nome, preco, qtdEstoque, categoria};
+                model.addRow(row);
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(null, "Formato inválido!\nAdmitido apenas valores inteiros!", "Erro",JOptionPane.WARNING_MESSAGE);
+            }catch(NullPointerException ex){
+                JOptionPane.showMessageDialog(null, "Código excede o código máximo.\n"
+                        + "Insira um código válido", "Erro",JOptionPane.WARNING_MESSAGE);
+            }
+        }else if(rbtnFiltroNome.isSelected()){
+            try{
+            ArrayList<Produto> produtos = controleProduto.filtrarNome(txtFiltro.getText());
+
+            for(Produto p: produtos){
+                String codigo = String.valueOf(p.getCodigo());
+                String nome = p.getNome();
+                String preco = String.valueOf(p.getPreco());
+                String qtdEstoque = String.valueOf(p.getQtdEstoque());
+                String categoria = p.getCategoria();
+
+                Object[] row = {codigo, nome, preco, qtdEstoque, categoria};
+                model.addRow(row);
+                }
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(null, "Remova espaços do campo numérico ou verifique se o filtro está preenchido!\nFormato inválido!", "Erro",JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnlistarActionPerformed
+
+    private void btndeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndeletarActionPerformed
+        try{
+            int codigo = Integer.parseInt(txtcodigo.getText());
+            boolean r = controleProduto.deletarProduto(codigo);
+            if(r)
+                JOptionPane.showMessageDialog(null, "Produto deletado!", "Atualização",JOptionPane.INFORMATION_MESSAGE);
+            
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(null, "Formato inválido!", "Erro",JOptionPane.WARNING_MESSAGE);
+        }catch(NullPointerException ex){
+            JOptionPane.showMessageDialog(null, "Não há produto com este código!", "Erro",JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btndeletarActionPerformed
+
+    private void tblListarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListarMouseClicked
+        txtcodigo.setEditable(false);
+        DefaultTableModel model = (DefaultTableModel) tblListar.getModel();
+        Object val = model.getDataVector().elementAt(tblListar.getSelectedRow());
+        String vals[] = String.valueOf(val).split(",");
+        
+        
+        String id = vals[0].replace("[","");
+        txtcodigo.setText(String.valueOf(id));
+        txtnome.setText(vals[1].replaceFirst(" ", ""));
+        String cat = vals[4].replaceFirst("]", "");
+        String cat2 = cat.replaceFirst(" ","");
+        txtcategoria.setText(String.valueOf(cat2));
+        txtpreco.setText(vals[2].replaceFirst(" ", ""));
+        String qtd = vals[3].replaceFirst(" ", "");
+        txtqtd.setText(qtd);
+    }//GEN-LAST:event_tblListarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -307,7 +475,12 @@ public class TelaProduto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.ButtonGroup radiogpFiltros;
+    private javax.swing.JRadioButton rbtnFiltroCod;
+    private javax.swing.JRadioButton rbtnFiltroNome;
+    private javax.swing.JRadioButton rbtnSemFiltro;
     private javax.swing.JTable tblListar;
+    private javax.swing.JTextField txtFiltro;
     private javax.swing.JTextField txtcategoria;
     private javax.swing.JTextField txtcodigo;
     private javax.swing.JTextField txtnome;
