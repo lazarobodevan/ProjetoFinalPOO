@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package br.ufv.persistencia;
-import br.ufv.controle.ControleProduto;
 import br.ufv.modelo.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +19,6 @@ import java.util.logging.Logger;
  * @author Lázaro
  */
 public class ProdutoDAO {
-    private ControleProduto controleProduto;
     private Connection conexao;
     
     
@@ -124,7 +122,6 @@ public class ProdutoDAO {
     
     public ArrayList<Produto> filtrarNome(String nomeParam){
         ArrayList<Produto> ps = new ArrayList<>();
-        
         
         try {
             String sql = "SELECT * FROM produto WHERE nome LIKE '"+nomeParam+"'";

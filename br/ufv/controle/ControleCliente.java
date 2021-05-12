@@ -11,7 +11,10 @@ package br.ufv.controle;
  */
 import br.ufv.persistencia.ClienteDAO;
 import br.ufv.modelo.Cliente;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class ControleCliente {
     
     ClienteDAO clienteDAO;
@@ -19,24 +22,60 @@ public class ControleCliente {
         clienteDAO = new ClienteDAO();
     }
     
-    public void cadastrarCliente(String nome, int cpf, String dtNasc, int codigo, String telefone){
+    public boolean cadastrarCliente(String nome, String cpf, String dtNasc, int codigo, String telefone){
         Cliente c = new Cliente(nome, cpf, dtNasc, codigo, telefone);
         Cliente cExistente = clienteDAO.pesquisaClienteCpf(cpf);
         if(cExistente != null){
-            System.err.println("Cliente já existente!");
+            return false;
         }else{
-            clienteDAO.cadastraCliente(c);
+            try {
+                clienteDAO.cadastraCliente(c);
+            } catch (ParseException ex) {
+                Logger.getLogger(ControleCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return true;
         }      
     }
     
-    public ArrayList<String> listarClientesCadastrados(){
-        ArrayList<Cliente> clientes = clienteDAO.listarClientesCadastrados();
-        ArrayList<String> clientesStr = new ArrayList<>();
-        
-        for(Cliente p: clientes){
-            clientesStr.add(clientes.toString());
-        }
-        return clientesStr;
+    public ArrayList<Cliente> listarClientesCadastrados(){
+        return clienteDAO.listarClientesCadastrados();
     }
     
+    public boolean atualizarCadastroCliente(String nome, String cpf, String dtNasc, int codigo, String telefone){
+        Cliente c = new Cliente(nome, cpf, dtNasc, codigo, telefone);
+        //Cliente cExistente = clienteDAO.pesquisaClienteCpf(cpf);
+//        if(cExistente != null){
+//            return false;
+//        }else{
+            clienteDAO.atualizarCadastroCliente(c);
+            return true;
+        //}      
+    }
+    
+    public Cliente pesquisaClienteCpf(String cpfParam){
+        try{
+            return clienteDAO.pesquisaClienteCpf(cpfParam);
+        }catch(NullPointerException ex){
+            Logger.getLogger(ControleCliente.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }catch(NumberFormatException ex){
+            Logger.getLogger(ControleCliente.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    
+   public ArrayList filtrarClienteNome(String nomeParam){
+       return clienteDAO.filtrarClienteNome(nomeParam);
+   }
+    
+   
+   public boolean deletarCliente(String cpfParam){
+       if(pesquisaClienteCpf(cpfParam) != null){
+           clienteDAO.deletarCliente(cpfParam);
+           return true;
+       }else{
+           return false;
+       }
+   }
 }
