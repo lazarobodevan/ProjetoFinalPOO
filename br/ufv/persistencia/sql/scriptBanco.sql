@@ -18,7 +18,7 @@ USE `projetofinalpoo` ;
 -- Table `projetofinalpoo`.`Cliente`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projetofinalpoo`.`Cliente` (
-  `idCliente` INT NOT NULL,
+  `idCliente` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
   `cpf` CHAR(14) NOT NULL,
   `dtNasc` DATE NOT NULL,
@@ -33,7 +33,7 @@ ENGINE = InnoDB;
 -- Table `projetofinalpoo`.`Produto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projetofinalpoo`.`Produto` (
-  `idProduto` INT NOT NULL,
+  `idProduto` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
   `preco` DOUBLE NOT NULL,
   `categoria` VARCHAR(45) NOT NULL,
@@ -46,7 +46,7 @@ ENGINE = InnoDB;
 -- Table `projetofinalpoo`.`Funcionario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projetofinalpoo`.`Funcionario` (
-  `idFuncionario` INT NOT NULL,
+  `idFuncionario` INT NOT NULL AUTO_INCREMENT,
   `matricula` INT NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
   `cpf` CHAR(14) NOT NULL,
@@ -69,7 +69,7 @@ ENGINE = InnoDB;
 -- Table `projetofinalpoo`.`Venda`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projetofinalpoo`.`Venda` (
-  `idVenda` INT NOT NULL,
+  `idVenda` INT NOT NULL AUTO_INCREMENT,
   `precoTotal` DOUBLE NOT NULL,
   `data` DATE NOT NULL,
   `idCliente` INT NOT NULL,
@@ -118,8 +118,8 @@ ENGINE = InnoDB;
 -- Table `projetofinalpoo`.`AcessoSistema`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projetofinalpoo`.`AcessoSistema` (
-  `idAcessoSistema` INT NOT NULL,
-  `dtAcesso` DATETIME NOT NULL,
+  `idAcessoSistema` INT NOT NULL AUTO_INCREMENT,
+  `dtAcesso` DATE NOT NULL,
   `hrAcesso` TIME NOT NULL,
   `hrSaida` TIME NOT NULL,
   `idFuncionario` INT NOT NULL,

@@ -89,4 +89,8 @@ public class ControleFuncionario {
     public boolean validaCadastro(String cpfParam, int matriculaParam){
         return funcionarioDAO.validaCadastro(cpfParam, matriculaParam);
     }
+    
+    public void setAcessoAoSistema(int idFuncionario, String dtEntrada, String hrEntrada, String hrSaida){
+        funcionarioDAO.setAcessoAoSistema(idFuncionario, dtEntrada, hrEntrada, hrSaida);
+    }
 }
