@@ -49,15 +49,18 @@ public class VendaDAO {
     
     public int getIdVenda(){
         try{
-        String sql = "SELECT MAX(idVenda)+1 AS 'idVenda' from venda";
-        PreparedStatement stmt;
-        stmt = conexao.prepareStatement(sql);
-        ResultSet rs = stmt.executeQuery(sql);
-        int id = rs.getInt("idVenda");
-        stmt.close();
-        return id;
+            String sql = "SELECT MAX(idVenda)+1 AS 'idVenda' from venda";
+            PreparedStatement stmt;
+            stmt = conexao.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            int id = rs.getInt("idVenda");
+            stmt.close();
+            return id;
         }catch(SQLException e){
-            System.out.println(e);
+            //System.out.println(e);
+            e.printStackTrace();
+            //System.out.println("Id");
             return 0;
         }
     }
@@ -67,8 +70,6 @@ public class VendaDAO {
     }
     
     public boolean cadastraVendaSql(Venda v){
-        if(v == null)
-            System.out.println("porraaaaaa");
         vendas.add(v);
         String sqlVenda =  "INSERT INTO venda(idVenda, precoTotal, data, idCliente, idFuncionario) VALUES(?,?,?,?,?)";
         String sqlProdutoHasVenda = "INSERT INTO produto_has_venda(idProduto, idVenda, preco_na_compra, qtd_produto) VALUES(?,?,?,?)";
@@ -107,7 +108,6 @@ public class VendaDAO {
         ArrayList<Venda> vs = new ArrayList<>();
         String sql = "SELECT * FROM produto_has_venda NATURAL JOIN produto NATURAL JOIN venda";
         PreparedStatement stmt;
-        PreparedStatement stmtjunc;
         ControleCliente controleCliente = new ControleCliente();
         ControleFuncionario controleFuncionario = new ControleFuncionario();
         try {

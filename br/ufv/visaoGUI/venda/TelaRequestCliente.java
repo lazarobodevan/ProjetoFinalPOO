@@ -149,8 +149,8 @@ public class TelaRequestCliente extends javax.swing.JFrame {
             Object[] options = { "Continuar", "Cancelar" };
             int opc = JOptionPane.showOptionDialog(null, "Cliente não encontrado!\nContinuar mesmo assim?", "Aviso", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
             if(opc == JOptionPane.OK_OPTION){
-                cpf = txtCpf.getText();
-                cliente = new Cliente("", "", "00/00/0000", controleCliente.listarClientesCadastrados().size(), "", "N");
+                //cpf = txtCpf.getText();
+                cliente = controleCliente.pesquisaClienteCpf("000.000.000-00");
                 new TelaVenda().setVisible(true);
                 this.dispose();
             }

@@ -6,6 +6,7 @@
 package projetofinalpoo;
 import br.ufv.visaoGUI.funcionario.TelaLogin;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 /**
  *
@@ -20,6 +21,7 @@ public class ProjetoFinalPOO {
         //TelaInicial in = new TelaInicial();
         
         new TelaLogin().setVisible(true);
+        
         
         Date hoje = new Date();
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");

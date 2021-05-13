@@ -173,4 +173,32 @@ public class ProdutoDAO {
         }
         return false;
     }
+    
+    
+    public boolean isDisponivel(Produto p, int qtd){
+        if(p.getQtdEstoque() >= qtd && p.getQtdEstoque() > 0){
+            return true;
+        }
+        return false;
+    }
+    
+    public void alteraEstoque(ArrayList<Produto> prods, ArrayList<Integer> qtds){
+        String sql =  "UPDATE produto SET qtdEstoque = ? WHERE idProduto = 0";
+        
+        try{
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+            int i = 0;
+            for(Produto p: prods){
+                sql =  "UPDATE produto SET qtdEstoque = ? WHERE idProduto = " + String.valueOf(p.getCodigo());
+                stmt = conexao.prepareStatement(sql);
+                stmt.setString(1, String.valueOf(p.getQtdEstoque() - qtds.get(i)));
+                stmt.execute();
+                i++;
+            }
+                stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 }

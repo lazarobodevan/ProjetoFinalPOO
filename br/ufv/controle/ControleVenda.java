@@ -48,12 +48,14 @@ public class ControleVenda {
         return vendaDAO.getProdutosVenda();
     }
     
-    public boolean cadastraVenda(Venda v){
+    public boolean cadastraVenda(Venda v, ArrayList<Integer> qtds){
+        controleProduto.alteraEstoque(v.getProdutos(), qtds);
         return vendaDAO.cadastraVendaSql(v);
     }
     
     public ArrayList<Venda> getVendasCadastradas(){
         return vendaDAO.getVendasCadastradas();
     }
+    
     
 }

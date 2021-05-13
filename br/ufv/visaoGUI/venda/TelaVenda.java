@@ -5,6 +5,7 @@
  */
 package br.ufv.visaoGUI.venda;
 
+import br.ufv.controle.ControleProduto;
 import br.ufv.controle.ControleVenda;
 import br.ufv.modelo.CargoFuncionario;
 import br.ufv.modelo.Produto;
@@ -12,6 +13,7 @@ import br.ufv.modelo.Venda;
 import br.ufv.visaoGUI.funcionario.TelaLogin;
 import br.ufv.visaoGUI.funcionario.TelaPrincipalCaixa;
 import br.ufv.visaoGUI.funcionario.TelaPrincipalGerente;
+import br.ufv.visaoGUI.produto.TelaProduto;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -33,17 +35,22 @@ public class TelaVenda extends javax.swing.JFrame {
      */
     //private TelaRequestCliente trc;
     private ControleVenda controleVenda;
+    private ControleProduto controleProduto;
     private DefaultTableModel model;
     private double precoTot = 0;
     private ArrayList<Produto> pVenda;
+    private String idVenda;
+    private static boolean visible;
     
     public TelaVenda() {
         initComponents();
-        //trc = new TelaRequestCliente();
         this.setLocationRelativeTo(null);
         controleVenda = new ControleVenda();
-        txtCodVenda.setText(String.valueOf(controleVenda.getIdVenda()));
+        controleProduto = new ControleProduto();
+        idVenda = String.valueOf(controleVenda.getIdVenda());
+        txtCodVenda.setText(idVenda);
         pVenda = new ArrayList<>();
+        visible = true;
         
         model = (DefaultTableModel) tblProdutos.getModel();
     }
@@ -65,6 +72,11 @@ public class TelaVenda extends javax.swing.JFrame {
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
     }
+    
+    public static boolean getVisivel(){
+        return visible;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -106,6 +118,8 @@ public class TelaVenda extends javax.swing.JFrame {
 
         txtCodVenda.setEditable(false);
 
+        txtCodProduto.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+
         spnQtd.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
         spnQtd.setValue(1);
 
@@ -125,16 +139,18 @@ public class TelaVenda extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtCodVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spnQtd, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spnQtd, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -191,12 +207,27 @@ public class TelaVenda extends javax.swing.JFrame {
 
         btnEditarProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/lapis.png"))); // NOI18N
         btnEditarProd.setToolTipText("Editar");
+        btnEditarProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarProdActionPerformed(evt);
+            }
+        });
 
         btnExcluirProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/deletar.png"))); // NOI18N
         btnExcluirProd.setToolTipText("Deletar");
+        btnExcluirProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirProdActionPerformed(evt);
+            }
+        });
 
         btnListarProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pesquisa.png"))); // NOI18N
         btnListarProd.setToolTipText("Listar");
+        btnListarProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListarProdActionPerformed(evt);
+            }
+        });
 
         btnFinalizarVenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/box.png"))); // NOI18N
         btnFinalizarVenda.addActionListener(new java.awt.event.ActionListener() {
@@ -289,6 +320,11 @@ public class TelaVenda extends javax.swing.JFrame {
             }
         });
         tblProdutos.getTableHeader().setReorderingAllowed(false);
+        tblProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProdutosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblProdutos);
         if (tblProdutos.getColumnModel().getColumnCount() > 0) {
             tblProdutos.getColumnModel().getColumn(0).setPreferredWidth(80);
@@ -348,11 +384,21 @@ public class TelaVenda extends javax.swing.JFrame {
 
     private void btncadastroProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncadastroProdActionPerformed
         Produto p = controleVenda.getProdutoId(Integer.parseInt(txtCodProduto.getText()));
+        int qtdProduto = Integer.parseInt(spnQtd.getValue().toString());
+        if(!controleProduto.isDisponivel(p, qtdProduto)){
+            JOptionPane.showMessageDialog(null, "Sem estoque suficiente!", "Erro",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+            
         if(p != null){
             this.setTableData(p);
+            if(!pVenda.contains(p))
+                pVenda.add(p);
+            
             precoTot += p.getPreco() * Integer.parseInt(spnQtd.getValue().toString());
             lblPrecoTot.setText(String.format("%.2f", precoTot));
             spnQtd.setValue(1);
+            txtCodProduto.setText("");
         }else{
             JOptionPane.showMessageDialog(null, "Produto não encontrado!", "Erro",JOptionPane.WARNING_MESSAGE);
         }
@@ -361,12 +407,26 @@ public class TelaVenda extends javax.swing.JFrame {
     private void btnFinalizarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarVendaActionPerformed
         TelaRequestCliente trc = new TelaRequestCliente();
         ArrayList<Integer> qtds = new ArrayList<>();
-        for(int i = 0; i < tblProdutos.getRowCount(); i++){
-            qtds.add(Integer.parseInt(tblProdutos.getValueAt(i,3).toString()));
+        for(int i = 0; i < pVenda.size(); i++){
+            qtds.add(i,0);
         }
+        for(int i = 0; i < tblProdutos.getRowCount(); i++){
+            
+            int codProduto = Integer.parseInt(tblProdutos.getValueAt(i, 0).toString());
+            int qtdProdutosNaColunaQtd = Integer.parseInt(tblProdutos.getValueAt(i, 3).toString());
+            int pos = pVenda.indexOf(controleProduto.pesquisaProdutoCod(codProduto))+1;
+            System.out.println(pos);
+            int qtdTot = qtds.get(pos)+qtdProdutosNaColunaQtd;
+            qtds.add(pos, qtdTot);
+//           int valorTabela = Integer.parseInt(model.getValueAt(i, 3).toString());
+//           Produto p = pVenda.get(i);
+//   
+//            qtds.add(pVenda.indexOf(p), qtds.get(pVenda.indexOf(p))+valorTabela);
+        }
+        System.out.println(qtds.size());
         Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Venda v = new Venda(precoTot, Integer.parseInt(txtCodVenda.getText()), trc.getCliente(), controleVenda.getProdutosVenda(),
+        Venda v = new Venda(precoTot, Integer.parseInt(txtCodVenda.getText()), trc.getCliente(), pVenda,
                 qtds, sdf.format(d.getTime()), TelaLogin.getFuncionarioLogado());
         trc.dispose();
         
@@ -374,14 +434,67 @@ public class TelaVenda extends javax.swing.JFrame {
         int opc = JOptionPane.showOptionDialog(null, "Finalizar compra?", "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
         
         if(opc == JOptionPane.OK_OPTION){
-               if(controleVenda.cadastraVenda(v)){
+               if(controleVenda.cadastraVenda(v, qtds)){
                    JOptionPane.showMessageDialog(null, "Venda finalizada com sucesso!", "Venda finalizada",JOptionPane.INFORMATION_MESSAGE);
                    lblPrecoTot.setText("00.00");
                    txtCodProduto.setText("");
+                   int id = Integer.parseInt(idVenda);
+                   id++;
+                   txtCodVenda.setText(String.valueOf(id));
                    this.resetTable();
+                   precoTot = 0;
                }
         }
     }//GEN-LAST:event_btnFinalizarVendaActionPerformed
+
+    private void tblProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProdutosMouseClicked
+        int selectedRow = tblProdutos.getSelectedRow();
+        String id = tblProdutos.getValueAt(selectedRow, 0).toString();
+        String qtd = tblProdutos.getValueAt(selectedRow, 3).toString();
+        
+        txtCodProduto.setText(id);
+        spnQtd.setValue(Integer.parseInt(qtd));
+    }//GEN-LAST:event_tblProdutosMouseClicked
+
+    private void btnEditarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarProdActionPerformed
+        try{
+        int selectedRow = tblProdutos.getSelectedRow();
+        int qtdN = Integer.parseInt(spnQtd.getModel().getValue().toString());
+        int qtdtabela = Integer.parseInt(tblProdutos.getValueAt(selectedRow, 3).toString());
+        double precUn = Double.parseDouble(tblProdutos.getValueAt(selectedRow, 2).toString());
+        //String precTos = lblPrecoTot.getText().replace(",", ".");
+        double precTo = Double.parseDouble(lblPrecoTot.getText().replaceAll("\\,", "."));
+        double precLblNovo = precTo - precUn*qtdtabela;
+        precLblNovo += precUn*qtdN;
+        precoTot = precLblNovo;
+        
+        model.setValueAt(String.valueOf(qtdN), selectedRow, 3);
+        model.setValueAt(String.valueOf(precUn*qtdN), selectedRow, 4);
+        lblPrecoTot.setText(String.format("%.2f", precoTot));
+        model.fireTableDataChanged();
+        }catch(ArrayIndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnEditarProdActionPerformed
+
+    private void btnExcluirProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirProdActionPerformed
+        int selectedRow = tblProdutos.getSelectedRow();
+        int qtdtabela = Integer.parseInt(tblProdutos.getValueAt(selectedRow, 3).toString());
+        double precUn = Double.parseDouble(tblProdutos.getValueAt(selectedRow, 2).toString());
+        double precTo = Double.parseDouble(lblPrecoTot.getText().replaceAll("\\,", "."));
+        double precLblNovo = precTo - precUn*qtdtabela;
+        precoTot = precLblNovo;
+        
+        lblPrecoTot.setText(String.format("%.2f", precoTot));
+        
+        model.getDataVector().removeElementAt(selectedRow);
+        pVenda.remove(selectedRow);
+        model.fireTableDataChanged();
+    }//GEN-LAST:event_btnExcluirProdActionPerformed
+
+    private void btnListarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarProdActionPerformed
+        new TelaProduto().setVisible(true);
+    }//GEN-LAST:event_btnListarProdActionPerformed
 
     /**
      * @param args the command line arguments

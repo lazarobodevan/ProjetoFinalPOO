@@ -61,4 +61,12 @@ public class ControleProduto {
     public boolean deletarProduto(int codigo){
         return produtoDAO.deletarProduto(codigo);
     }
+    
+    public boolean isDisponivel(Produto p, int qtd){
+        return produtoDAO.isDisponivel(p, qtd);
+    }
+    public void alteraEstoque(ArrayList<Produto> prods, ArrayList<Integer> qtds){
+        produtoDAO.alteraEstoque(prods, qtds);
+    }
+    
 }

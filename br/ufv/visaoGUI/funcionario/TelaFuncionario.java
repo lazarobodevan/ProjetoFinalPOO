@@ -56,7 +56,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         txtDtContrat.setText(sdf.format(d.getTime()));
         txtCodigo.setEditable(false);
-        txtCodigo.setText(String.valueOf(controleFuncionario.getFuncionarios().size()));
+        txtCodigo.setText(String.valueOf(controleFuncionario.getFuncionarios().size()+1));
         setEditFilter();
         
         model = (DefaultTableModel) tblListar.getModel();
@@ -773,7 +773,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
     }//GEN-LAST:event_tblListarMouseClicked
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        txtCodigo.setText(String.valueOf(controleFuncionario.getFuncionarios().size()));
+        txtCodigo.setText(String.valueOf(controleFuncionario.getFuncionarios().size()+1));
         txtNome.setText("");
         txtCpf.setText("");
         txtTelefone.setText("");

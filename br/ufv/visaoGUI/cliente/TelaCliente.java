@@ -497,7 +497,7 @@ public class TelaCliente extends javax.swing.JFrame {
         String tel = tel1.replaceAll(" ", "");
         txtTelefone.setText(tel);
         
-        cbSexo.getModel().setSelectedItem(vals[5].toString());
+        cbSexo.getModel().setSelectedItem(controleCliente.pesquisaClienteId(Integer.parseInt(id)).getSexo());
     }//GEN-LAST:event_tblListarMouseClicked
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed

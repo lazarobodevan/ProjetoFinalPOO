@@ -199,11 +199,13 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
     private void mniClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniClienteActionPerformed
         this.dispose();
         TelaCliente t = new TelaCliente();
+        t.setVisible(true);
     }//GEN-LAST:event_mniClienteActionPerformed
 
     private void mniProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniProdutoActionPerformed
         this.dispose();
         TelaProduto t = new TelaProduto();
+        t.setVisible(true);
     }//GEN-LAST:event_mniProdutoActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed

@@ -224,10 +224,16 @@ public class TelaLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginKeyPressed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-        this.setLogAcessoSaida();
-        controleFuncionario.setAcessoAoSistema(funcionario.getCodigo(), dtEntrada, hrEntrada, hrSaida);
-        this.dispose();
-        System.exit(0);
+        try{
+            this.setLogAcessoSaida();
+            controleFuncionario.setAcessoAoSistema(funcionario.getCodigo(), dtEntrada, hrEntrada, hrSaida);
+            this.dispose();
+            System.exit(0);
+        }catch(NullPointerException e){
+            e.printStackTrace();
+            this.dispose();
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnSairActionPerformed
 
     /**
