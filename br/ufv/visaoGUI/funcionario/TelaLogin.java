@@ -48,7 +48,7 @@ public class TelaLogin extends javax.swing.JFrame {
            return null;
        }
        
-       public Funcionario getFuncionarioLogado(){
+       public static Funcionario getFuncionarioLogado(){
            return funcionario;
        }
     /**

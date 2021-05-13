@@ -25,6 +25,7 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
      * Creates new form TelaPrincipalCaixa
      */
     private TelaLogin tl = new TelaLogin();
+    private TelaPrincipalGerente t;
     public TelaPrincipalCaixa() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -65,7 +66,7 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
 
         lblData = new javax.swing.JLabel();
         lblHora = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         lblBemVindo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -85,7 +86,12 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
 
         lblHora.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
-        jButton1.setText("Sair");
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         lblBemVindo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblBemVindo.setForeground(new java.awt.Color(23, 0, 255));
@@ -159,7 +165,7 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblHora, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
                     .addComponent(lblData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1))
+                    .addComponent(btnSair))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55))
@@ -175,7 +181,7 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblHora, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(17, 17, 17)
-                        .addComponent(jButton1)))
+                        .addComponent(btnSair)))
                 .addContainerGap(69, Short.MAX_VALUE))
         );
 
@@ -191,6 +197,18 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
         this.dispose();
         TelaProduto t = new TelaProduto();
     }//GEN-LAST:event_mniProdutoActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+
+        if(TelaLogin.getFuncionarioLogado().getCargo().getDescricao().toUpperCase().equals("GERENTE")){
+            t = new TelaPrincipalGerente();
+            t.setVisible(true);
+            this.dispose();
+        }else{
+            this.dispose();
+            tl.setVisible(true);
+        }
+    }//GEN-LAST:event_btnSairActionPerformed
 
     /**
      * @param args the command line arguments
@@ -228,7 +246,7 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnSair;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

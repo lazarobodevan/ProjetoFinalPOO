@@ -7,9 +7,12 @@ package br.ufv.visaoGUI.produto;
 
 import br.ufv.visaoGUI.telaPrincipal.TelaInicial;
 import br.ufv.controle.ControleProduto;
+import br.ufv.modelo.CargoFuncionario;
 import br.ufv.modelo.Produto;
 import br.ufv.persistencia.ConexaoMySQL;
+import br.ufv.visaoGUI.funcionario.TelaLogin;
 import br.ufv.visaoGUI.funcionario.TelaPrincipalCaixa;
+import br.ufv.visaoGUI.funcionario.TelaPrincipalGerente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -30,12 +33,14 @@ public class TelaProduto extends javax.swing.JFrame {
      */
     private ControleProduto controleProduto;
     private Connection conexao = new ConexaoMySQL().getConexaoMySQL();
+    private TelaPrincipalGerente tg;
     
     public TelaProduto() {
         initComponents();
         controleProduto = new ControleProduto();
         setVisible(true);
         this.setLocationRelativeTo(null);
+        txtcodigo.setEditable(false);
         System.out.println(conexao.toString());
         txtcodigo.setText(String.valueOf(controleProduto.listarProdutosCadastrados().size()+1));
         
@@ -339,8 +344,6 @@ public class TelaProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_btncadastroActionPerformed
 
     private void btneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarActionPerformed
-        txtcodigo.setEditable(true);
-
         try{
             int codigo = Integer.parseInt(txtcodigo.getText());
             String nome = txtnome.getText();
@@ -456,8 +459,15 @@ public class TelaProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_tblListarMouseClicked
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        this.dispose();
-        TelaPrincipalCaixa t = new TelaPrincipalCaixa();
+        if(TelaLogin.getFuncionarioLogado().getCargo().equals(CargoFuncionario.GERENTE)){
+            tg = new TelaPrincipalGerente();
+            tg.setVisible(true);
+            this.dispose();
+        }else{
+           TelaPrincipalCaixa t = new TelaPrincipalCaixa();
+           t.setVisible(true);
+           this.dispose();
+        }
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**

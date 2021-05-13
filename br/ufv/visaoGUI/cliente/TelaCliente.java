@@ -6,6 +6,7 @@
 package br.ufv.visaoGUI.cliente;
 
 import br.ufv.controle.ControleCliente;
+import br.ufv.modelo.CargoFuncionario;
 import br.ufv.modelo.Cliente;
 import br.ufv.visaoGUI.funcionario.*;
 import java.util.ArrayList;
@@ -23,10 +24,12 @@ public class TelaCliente extends javax.swing.JFrame {
      * Creates new form TelaCliente
      */
     private ControleCliente controleCliente;
+    private TelaPrincipalGerente tg;
     public TelaCliente() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        txtCodigo.setEditable(false);
         controleCliente = new ControleCliente();
         txtCodigo.setText(String.valueOf(controleCliente.listarClientesCadastrados().size()+1));
     }
@@ -320,8 +323,6 @@ public class TelaCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-         txtCodigo.setEditable(true);
-
         try{
             int codigo = Integer.parseInt(txtCodigo.getText());
             String nome = txtNome.getText();
@@ -421,7 +422,6 @@ public class TelaCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void tblListarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListarMouseClicked
-        txtCodigo.setEditable(false);
         DefaultTableModel model = (DefaultTableModel) tblListar.getModel();
         Object val = model.getDataVector().elementAt(tblListar.getSelectedRow());
         String vals[] = String.valueOf(val).split(",");
@@ -443,13 +443,16 @@ public class TelaCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_tblListarMouseClicked
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        TelaLogin tl = new TelaLogin();
+
         
-        if(tl.getFuncionarioLogado().getCargo().getDescricao().toUpperCase().equals("GERENTE")){
+        if(TelaLogin.getFuncionarioLogado().getCargo().equals(CargoFuncionario.GERENTE)){
+            tg = new TelaPrincipalGerente();
+            tg.setVisible(true);
             this.dispose();
-            tl.dispose();
+        }else{
             TelaPrincipalCaixa tcx = new TelaPrincipalCaixa();
             tcx.setVisible(true);
+            this.dispose();
         }
         
     }//GEN-LAST:event_btnVoltarActionPerformed

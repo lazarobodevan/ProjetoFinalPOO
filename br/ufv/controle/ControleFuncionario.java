@@ -9,6 +9,7 @@ import br.ufv.modelo.CargoFuncionario;
 import br.ufv.modelo.Funcionario;
 import br.ufv.persistencia.FuncionarioDAO;
 import br.ufv.visaoGUI.funcionario.TelaLogin;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -23,13 +24,11 @@ public class ControleFuncionario {
     }
     
     public boolean contrataFuncionario(String nome, String cpf, String dtNasc, int codigo, String telefone, int matricula, String senha, double salario,
-            String cargo, String dtContrat, String situacao){
+            String cargo, String dtContrat, String situacao) throws SQLException{
         Funcionario f = new Funcionario(nome, cpf, dtNasc, codigo, telefone, matricula, senha, salario, CargoFuncionario.valueOf(cargo.toUpperCase()));
         f.setDtContratado(dtContrat);
         f.setSituacao(situacao.toUpperCase());
-        if(validaCadastro(cpf, matricula))
-            return funcionarioDAO.contrataFuncionario(f);
-        return false;
+        return funcionarioDAO.contrataFuncionario(f);
     }
     
     public boolean atualizaFuncionario(String nome, String cpf, String dtNasc, int codigo, String telefone, int matricula, String senha, double salario,
@@ -39,10 +38,10 @@ public class ControleFuncionario {
         f.setCargo(cargo);
         f.setSituacao(situacao);
         
-        if(funcionarioDAO.validaAtualizacao(f)){
+        //if(funcionarioDAO.validaAtualizacao(f)){
             return funcionarioDAO.atualizaFuncionario(f);
-        }
-        return false;
+        //}
+        //return false;
     }
     
     public boolean deletarFuncionario(int id){

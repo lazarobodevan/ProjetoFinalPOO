@@ -38,10 +38,10 @@ public class FuncionarioDAO {
         return true;
     }
     
-    public boolean contrataFuncionario(Funcionario f){
+    public boolean contrataFuncionario(Funcionario f) throws SQLException{
         String sql =  "INSERT INTO funcionario(nome, cpf, dtNasc, idFuncionario, telefone, matricula, senha, salario, situacao, cargo, dtContratado) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement stmt;
-        try {
+        //try {
             stmt = conexao.prepareStatement(sql);
             stmt.setString(1, String.valueOf(f.getNome()));
             stmt.setString(2, String.valueOf(f.getCpf()));
@@ -68,10 +68,10 @@ public class FuncionarioDAO {
             
             return true;
             
-        } catch (SQLException ex) {
-            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
+        //} catch (SQLException ex) {
+         //   Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        //    return false;
+       // }
     }
     
     public boolean atualizaFuncionario(Funcionario f){
@@ -105,19 +105,19 @@ public class FuncionarioDAO {
         }
     }
     
-    public boolean validaAtualizacao(Funcionario f){
-        /*
-            Nao posso querer atualizar os dados de um funcionario com
-            cpf ou matricula de um funcionario ja cadastrado
-        */
-        for(Funcionario func : funcionarios){
-            if(func.getCodigo() == f.getCodigo()) continue;
-            if(func.getCpf().equals(f.getCpf()) || func.getMatricula() == f.getMatricula()){
-                return false;
-            }
-        }
-        return true;
-    }
+//    public boolean validaAtualizacao(Funcionario f){
+//        /*
+//            Nao posso querer atualizar os dados de um funcionario com
+//            cpf ou matricula de um funcionario ja cadastrado
+//        */
+//        for(Funcionario func : funcionarios){
+//            if(func.getCodigo() == f.getCodigo()) continue;
+//            if(func.getCpf().equals(f.getCpf()) || func.getMatricula() == f.getMatricula()){
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
     
     public boolean deletaFuncionario(int id){
         String sql =  "DELETE FROM funcionario WHERE idFuncionario = "+id;
@@ -136,7 +136,10 @@ public class FuncionarioDAO {
     }
     
     public ArrayList<Funcionario> getFuncionariosSQL(){
-        String sql = "SELECT * FROM funcionario";
+        String sql = "SELECT idFuncionario, nome, cpf, date_format(dtNasc, '%d/%m/%Y') AS 'dtNasc', "
+                + "telefone, matricula, senha, salario, cargo, date_format(dtContratado, '%d/%m/%Y') AS 'dtContratado', "
+                + " situacao FROM funcionario";
+        
         System.out.println(sql);
         PreparedStatement stmt;
         ArrayList<Funcionario> funcs = new ArrayList<>();

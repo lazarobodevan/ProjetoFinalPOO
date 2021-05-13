@@ -10,15 +10,22 @@ import br.ufv.controle.ControleFuncionario;
 import br.ufv.modelo.CargoFuncionario;
 import br.ufv.modelo.Funcionario;
 import br.ufv.modelo.SituacaoFuncionario;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.BorderFactory;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
+import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
@@ -32,6 +39,8 @@ public class TelaFuncionario extends javax.swing.JFrame {
     Date d = new Date();
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     
+    private DefaultTableModel model;
+    
     public TelaFuncionario() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -39,6 +48,9 @@ public class TelaFuncionario extends javax.swing.JFrame {
         txtCodigo.setEditable(false);
         txtCodigo.setText(String.valueOf(controleFuncionario.getFuncionarios().size()));
         setEditFilter();
+        
+        model = (DefaultTableModel) tblListar.getModel();
+        cbFiltros.setSelectedIndex(0);
     }
 
     public void setEditFilter(){
@@ -53,6 +65,42 @@ public class TelaFuncionario extends javax.swing.JFrame {
        }).start();
         
     }
+    
+    public void setDataTable(Funcionario f){        
+        String codigo = String.valueOf(f.getCodigo());
+        String nome = f.getNome();
+        String cpf = String.valueOf(f.getCpf());
+        String telefone = f.getTelefone();
+        String dtNasc = f.getDtNasc();
+        String matricula = String.valueOf(f.getMatricula());
+        String salario = String.valueOf(f.getSalario());
+        String situacao = f.getSituacao().getDescricao().toUpperCase();
+        String dtContra = f.getDtContratacao();
+        String cargo = f.getCargo().getDescricao().toUpperCase();
+
+        Object[] row = {codigo, nome, cpf, dtNasc, telefone, matricula, salario, situacao, dtContra, cargo};
+        model.addRow(row);
+    }
+    
+    public boolean validarData(String data, JTextField txt){
+        int dia = Integer.parseInt(data.substring(0,2));
+        int mes = Integer.parseInt(data.substring(3,5));
+        int ano = Integer.parseInt(data.substring(6));
+        txt.setBorder(this.txtCpf.getBorder());
+        
+        if(mes == 2 && (dia <= 28 && dia >= 1)){
+            return true;
+        }else if((mes == 4 || mes == 6 || mes == 9 || mes == 11) && (dia >=1 && dia <=30)){
+            return true;
+        }else if((mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12) && (dia >=1 && dia <=31)){
+            return true;
+        }else{
+            Border border = BorderFactory.createLineBorder(Color.RED, 2);
+            txt.setBorder(border);
+            return false;
+        }
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -343,9 +391,8 @@ public class TelaFuncionario extends javax.swing.JFrame {
                             .addComponent(txtDtNasc)
                             .addComponent(txtCpf)
                             .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(txtCodigo)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(73, 73, 73)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
@@ -430,12 +477,13 @@ public class TelaFuncionario extends javax.swing.JFrame {
                             .addComponent(txtDtNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCadastrar)
-                            .addComponent(btnEditar)
-                            .addComponent(btnDeletar)
-                            .addComponent(btnListar)
-                            .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnCadastrar)
+                                .addComponent(btnEditar)
+                                .addComponent(btnDeletar)
+                                .addComponent(btnListar)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -452,7 +500,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-       try{
+        try{            
             int codigo = Integer.parseInt(txtCodigo.getText());
             String nome = txtNome.getText();
             String cpf = txtCpf.getText();
@@ -465,33 +513,41 @@ public class TelaFuncionario extends javax.swing.JFrame {
             String dtContratado = txtDtContrat.getText();
             CargoFuncionario cargo = CargoFuncionario.valueOf(cbCargo.getSelectedItem().toString().toUpperCase());
             
-            boolean f = controleFuncionario.contrataFuncionario(nome, cpf, dtNasc, codigo, telefone, matricula, senha, salario, cargo.getDescricao(), dtContratado, situacao.getDescricao());
-            if(f){
-                JOptionPane.showMessageDialog(null, "Cadastro efetuado!", "Sucesso!",JOptionPane.INFORMATION_MESSAGE);
-                txtCodigo.setText(String.valueOf(controleFuncionario.getFuncionarios().size()));
-                txtNome.setText("");
-                txtCpf.setText("");
-                txtTelefone.setText("");
-                txtDtNasc.setText("");
-                txtDtContrat.setText(Funcionario.getDtHoje());
-                txtSalario.setText("");
-                txtSenha.setText("");
-                txtMatricula.setText("");
-                cbCargo.setSelectedIndex(-1);
-                cbSituacao.setSelectedIndex(-1);
-            }else
-                JOptionPane.showMessageDialog(null, "CPF já cadastrado!\nInsira um CPF válido", "Erro",JOptionPane.WARNING_MESSAGE);
-
+            if(!validarData(dtContratado, txtDtContrat) || !this.validarData(dtNasc, txtDtNasc)){
+                JOptionPane.showMessageDialog(null, "Falha na inserção!\nData inválida", "Erro",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             
+            controleFuncionario.contrataFuncionario(nome, cpf, dtNasc, codigo, telefone, matricula, senha, salario, cargo.getDescricao(), dtContratado, situacao.getDescricao());
+            
+            JOptionPane.showMessageDialog(null, "Cadastro efetuado!", "Sucesso!",JOptionPane.INFORMATION_MESSAGE);
+            txtCodigo.setText(String.valueOf(controleFuncionario.getFuncionarios().size()));
+            txtNome.setText("");
+            txtCpf.setText("");
+            txtTelefone.setText("");
+            txtDtNasc.setText("");
+            txtDtContrat.setText(Funcionario.getDtHoje());
+            txtSalario.setText("");
+            txtSenha.setText("");
+            txtMatricula.setText("");
+            cbCargo.setSelectedIndex(-1);
+            cbSituacao.setSelectedIndex(-1);
+
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null,  "Formato inválido!\nRemova os espaços dos valores numéricos!"
                     + "\nVerifique se os campos estão preenchidos corretamente.", "Erro",JOptionPane.WARNING_MESSAGE);
+        }catch(SQLIntegrityConstraintViolationException e){
+            JOptionPane.showMessageDialog(null, "Falha na inserção!\nCPF ou Matrícula já existentes\n"+e.getMessage()+ "codigo: "+e.getErrorCode(), "Erro",JOptionPane.WARNING_MESSAGE);
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Erro de SQL", "Erro",JOptionPane.WARNING_MESSAGE);
+        }catch(StringIndexOutOfBoundsException e){
+            JOptionPane.showMessageDialog(null, "Falha na inserção!\nTodos os campos precisam estar preenchidos", "Erro",JOptionPane.WARNING_MESSAGE);
+        }catch(NullPointerException e){
+            JOptionPane.showMessageDialog(null, "Todos os campos precisam estar preenchidos!", "Erro",JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        txtCodigo.setEditable(true);
-
         try{
             int codigo = Integer.parseInt(txtCodigo.getText());
             String nome = txtNome.getText();
@@ -528,7 +584,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
         Funcionario f = controleFuncionario.getFuncionarioId(id);
         if(f != null){
             Object[] options = { "Deletar", "Cancelar" };
-            int opc = JOptionPane.showOptionDialog(null, "Deletar este funcionario?\n"+f.toString(), "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+            int opc = JOptionPane.showOptionDialog(null, "Deletar este funcionario?", "Confirmação", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
             if(opc == JOptionPane.OK_OPTION){
                 boolean r = controleFuncionario.deletarFuncionario(id);
                 if(r){
@@ -541,101 +597,50 @@ public class TelaFuncionario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeletarActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        DefaultTableModel model = (DefaultTableModel) tblListar.getModel();
+
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
-        
-        if(!ckbAplicarFiltro.isSelected()){
-            for(Funcionario f: controleFuncionario.getFuncionariosSql()){
-                String codigo = String.valueOf(f.getCodigo());
-                String nome = f.getNome();
-                String cpf = String.valueOf(f.getCpf());
-                String telefone = f.getTelefone();
-                String dtNasc = f.getDtNasc();
-                String matricula = String.valueOf(f.getMatricula());
-                String salario = String.valueOf(f.getSalario());
-                String situacao = f.getSituacao().getDescricao().toUpperCase();
-                String dtContra = f.getDtContratacao();
-                String cargo = f.getCargo().getDescricao().toUpperCase();
-
-                Object[] row = {codigo, nome, cpf, dtNasc, telefone, matricula, salario, situacao, dtContra, cargo};
-                model.addRow(row);
-            }
-        }else{
-            if(cbFiltros.getSelectedItem().toString().equals("CPF")){
-                Funcionario f = controleFuncionario.getFuncionarioCpf(txtFiltro.getText());
-                String codigo = String.valueOf(f.getCodigo());
-                String nome = f.getNome();
-                String cpf = String.valueOf(f.getCpf());
-                String telefone = f.getTelefone();
-                String dtNasc = f.getDtNasc();
-                String matricula = String.valueOf(f.getMatricula());
-                String salario = String.valueOf(f.getSalario());
-                String situacao = f.getSituacao().getDescricao().toUpperCase();
-                String dtContra = f.getDtContratacao();
-                String cargo = f.getCargo().getDescricao().toUpperCase();
-
-                Object[] row = {codigo, nome, cpf, dtNasc, telefone, matricula, salario, situacao, dtContra, cargo};
-                model.addRow(row);
-            }else if(cbFiltros.getSelectedItem().toString().equals("Situacao")){
-                for(Funcionario f: controleFuncionario.getFuncionariosSituacao(txtFiltro.getText().toUpperCase())){
-                    String codigo = String.valueOf(f.getCodigo());
-                    String nome = f.getNome();
-                    String cpf = String.valueOf(f.getCpf());
-                    String telefone = f.getTelefone();
-                    String dtNasc = f.getDtNasc();
-                    String matricula = String.valueOf(f.getMatricula());
-                    String salario = String.valueOf(f.getSalario());
-                    String situacao = f.getSituacao().getDescricao().toUpperCase();
-                    String dtContra = f.getDtContratacao();
-                    String cargo = f.getCargo().getDescricao().toUpperCase();
-
-                    Object[] row = {codigo, nome, cpf, dtNasc, telefone, matricula, salario, situacao, dtContra, cargo};
-                    model.addRow(row);
+        try{
+            if(!ckbAplicarFiltro.isSelected()){
+                for(Funcionario f: controleFuncionario.getFuncionariosSql()){
+                    setDataTable(f);
                 }
-            }else if(cbFiltros.getSelectedItem().toString().equals("Cargo")){
-                for(Funcionario f: controleFuncionario.getFuncionariosCargo(txtFiltro.getText().toUpperCase())){
-                    String codigo = String.valueOf(f.getCodigo());
-                    String nome = f.getNome();
-                    String cpf = String.valueOf(f.getCpf());
-                    String telefone = f.getTelefone();
-                    String dtNasc = f.getDtNasc();
-                    String matricula = String.valueOf(f.getMatricula());
-                    String salario = String.valueOf(f.getSalario());
-                    String situacao = f.getSituacao().getDescricao().toUpperCase();
-                    String dtContra = f.getDtContratacao();
-                    String cargo = f.getCargo().getDescricao().toUpperCase();
-
-                    Object[] row = {codigo, nome, cpf, dtNasc, telefone, matricula, salario, situacao, dtContra, cargo};
-                    model.addRow(row);
-                }
-            }else if(cbFiltros.getSelectedItem().toString().equals("Salario")){
-                String valor[] = txtFiltro.getText().split(", ");
-                ArrayList<Funcionario> funcionarios;
-                if(valor.length == 1){
-                    funcionarios = controleFuncionario.getFuncionariosSalario(Double.parseDouble(txtFiltro.getText()));
-                }else{
-                    Double min, max;
-                    min = Double.parseDouble(valor[0]);
-                    max = Double.parseDouble(valor[1]);
-                    funcionarios = controleFuncionario.getFuncionariosSalario(min, max);
-                }
-                for(Funcionario f: funcionarios){
-                    String codigo = String.valueOf(f.getCodigo());
-                    String nome = f.getNome();
-                    String cpf = String.valueOf(f.getCpf());
-                    String telefone = f.getTelefone();
-                    String dtNasc = f.getDtNasc();
-                    String matricula = String.valueOf(f.getMatricula());
-                    String salario = String.valueOf(f.getSalario());
-                    String situacao = f.getSituacao().getDescricao().toUpperCase();
-                    String dtContra = f.getDtContratacao();
-                    String cargo = f.getCargo().getDescricao().toUpperCase();
-
-                    Object[] row = {codigo, nome, cpf, dtNasc, telefone, matricula, salario, situacao, dtContra, cargo};
-                    model.addRow(row);
+            }else{
+                if(cbFiltros.getSelectedItem().toString().equals("CPF")){
+                    Funcionario f = controleFuncionario.getFuncionarioCpf(txtFiltro.getText());
+                    setDataTable(f);
+                }else if(cbFiltros.getSelectedItem().toString().equals("Situacao")){
+                    for(Funcionario f: controleFuncionario.getFuncionariosSituacao(txtFiltro.getText().toUpperCase())){
+                        setDataTable(f);
+                    }
+                }else if(cbFiltros.getSelectedItem().toString().equals("Cargo")){
+                    for(Funcionario f: controleFuncionario.getFuncionariosCargo(txtFiltro.getText().toUpperCase())){
+                        setDataTable(f);
+                    }
+                }else if(cbFiltros.getSelectedItem().toString().equals("Salario")){
+                    String valor[] = txtFiltro.getText().split(", ");
+                    ArrayList<Funcionario> funcionarios;
+                    if(valor.length == 1){
+                        funcionarios = controleFuncionario.getFuncionariosSalario(Double.parseDouble(txtFiltro.getText()));
+                    }else{
+                        Double min, max;
+                        min = Double.parseDouble(valor[0]);
+                        max = Double.parseDouble(valor[1]);
+                        funcionarios = controleFuncionario.getFuncionariosSalario(min, max);
+                    }
+                    for(Funcionario f: funcionarios){
+                        setDataTable(f);
+                    }
                 }
             }
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Filtro inválido.\n"
+                    + "CPF: numeros sem . ou -\n"
+                    + "Salario: xxxx.xx (exato) ou xxxx.xx, yyyy.yy (min, max)", "Erro",JOptionPane.INFORMATION_MESSAGE);
+        }catch(NullPointerException e){
+            JOptionPane.showMessageDialog(null, "Filtro inválido.\n"
+                    + "CPF: numeros sem . ou -\n"
+                    + "Salario: xxxx.xx (exato) ou xxxx.xx, yyyy.yy (min, max)", "Erro",JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnListarActionPerformed
 
@@ -675,6 +680,8 @@ public class TelaFuncionario extends javax.swing.JFrame {
         String cg1 = vals[9].replace("]", "");
         String cg = cg1.replaceAll(" ", "");
         cbCargo.getModel().setSelectedItem(cg);
+        
+        txtSenha.setText(controleFuncionario.getFuncionarioId(Integer.parseInt(codigo)).getSenha());
     }//GEN-LAST:event_tblListarMouseClicked
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
