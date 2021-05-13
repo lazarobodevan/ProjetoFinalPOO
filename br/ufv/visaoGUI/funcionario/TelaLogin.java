@@ -41,8 +41,7 @@ public class TelaLogin extends javax.swing.JFrame {
            String senha = new String(txtSenha.getPassword());
            for(Funcionario f: funcionarios){
                if(String.valueOf(f.getMatricula()).equals(txtUsuario.getText()) && f.getSenha().equals(senha)){
-                   JOptionPane.showMessageDialog(null, "Bem vind@, "+f.getNome(), "Logad@ com sucesso!",JOptionPane.WARNING_MESSAGE);
-               return f;
+                   return f;
                }
            }
            return null;

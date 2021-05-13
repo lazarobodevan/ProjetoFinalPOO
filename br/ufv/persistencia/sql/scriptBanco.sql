@@ -20,9 +20,10 @@ USE `projetofinalpoo` ;
 CREATE TABLE IF NOT EXISTS `projetofinalpoo`.`Cliente` (
   `idCliente` INT NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
-  `cpf` CHAR(11) NOT NULL,
+  `cpf` CHAR(14) NOT NULL,
   `dtNasc` DATE NOT NULL,
-  `telefone` CHAR(13) NULL,
+  `telefone` CHAR(14) NOT NULL,
+  `sexo` CHAR NOT NULL,
   PRIMARY KEY (`idCliente`),
   UNIQUE INDEX `cpf_UNIQUE` (`cpf` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -48,14 +49,16 @@ CREATE TABLE IF NOT EXISTS `projetofinalpoo`.`Funcionario` (
   `idFuncionario` INT NOT NULL,
   `matricula` INT NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
-  `cpf` CHAR(11) NOT NULL,
-  `telefone` CHAR(13) NOT NULL,
+  `cpf` CHAR(14) NOT NULL,
+  `telefone` CHAR(14) NOT NULL,
   `dtNasc` DATE NOT NULL,
   `senha` VARCHAR(45) NOT NULL,
   `salario` DOUBLE NOT NULL,
   `dtContratado` DATE NOT NULL,
   `situacao` VARCHAR(45) NOT NULL,
   `cargo` VARCHAR(45) NOT NULL,
+  `sexo` CHAR NOT NULL,
+  `foto` VARCHAR(150) NOT NULL,
   PRIMARY KEY (`idFuncionario`),
   UNIQUE INDEX `matricula_UNIQUE` (`matricula` ASC) VISIBLE,
   UNIQUE INDEX `cpf_UNIQUE` (`cpf` ASC) VISIBLE)
@@ -91,19 +94,20 @@ ENGINE = InnoDB;
 -- Table `projetofinalpoo`.`Produto_has_Venda`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projetofinalpoo`.`Produto_has_Venda` (
-  `Produto_idProduto` INT NOT NULL,
-  `Venda_idVenda` INT NOT NULL,
+  `idProduto` INT NOT NULL,
+  `idVenda` INT NOT NULL,
   `preco_na_compra` DOUBLE NOT NULL,
-  PRIMARY KEY (`Produto_idProduto`, `Venda_idVenda`),
-  INDEX `fk_Produto_has_Venda_Venda1_idx` (`Venda_idVenda` ASC) VISIBLE,
-  INDEX `fk_Produto_has_Venda_Produto_idx` (`Produto_idProduto` ASC) VISIBLE,
+  `qtd_produto` INT NOT NULL,
+  PRIMARY KEY (`idProduto`, `idVenda`),
+  INDEX `fk_Produto_has_Venda_Venda1_idx` (`idVenda` ASC) VISIBLE,
+  INDEX `fk_Produto_has_Venda_Produto_idx` (`idProduto` ASC) VISIBLE,
   CONSTRAINT `fk_Produto_has_Venda_Produto`
-    FOREIGN KEY (`Produto_idProduto`)
+    FOREIGN KEY (`idProduto`)
     REFERENCES `projetofinalpoo`.`Produto` (`idProduto`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Produto_has_Venda_Venda1`
-    FOREIGN KEY (`Venda_idVenda`)
+    FOREIGN KEY (`idVenda`)
     REFERENCES `projetofinalpoo`.`Venda` (`idVenda`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

@@ -7,6 +7,7 @@ package br.ufv.controle;
 
 import br.ufv.modelo.CargoFuncionario;
 import br.ufv.modelo.Funcionario;
+import br.ufv.modelo.SituacaoFuncionario;
 import br.ufv.persistencia.FuncionarioDAO;
 import br.ufv.visaoGUI.funcionario.TelaLogin;
 import java.sql.SQLException;
@@ -24,20 +25,18 @@ public class ControleFuncionario {
     }
     
     public boolean contrataFuncionario(String nome, String cpf, String dtNasc, int codigo, String telefone, int matricula, String senha, double salario,
-            String cargo, String dtContrat, String situacao) throws SQLException{
-        Funcionario f = new Funcionario(nome, cpf, dtNasc, codigo, telefone, matricula, senha, salario, CargoFuncionario.valueOf(cargo.toUpperCase()));
-        f.setDtContratado(dtContrat);
-        f.setSituacao(situacao.toUpperCase());
+            String cargo, String dtContrat, String situacao, String sexo, String foto) throws SQLException{
+        Funcionario f = new Funcionario(nome, cpf, dtNasc, codigo, telefone, sexo, matricula, senha, salario, 
+                        CargoFuncionario.valueOf(cargo.toUpperCase()), SituacaoFuncionario.valueOf(situacao.toUpperCase()), dtContrat);
+        f.setFoto(foto);
         return funcionarioDAO.contrataFuncionario(f);
     }
     
     public boolean atualizaFuncionario(String nome, String cpf, String dtNasc, int codigo, String telefone, int matricula, String senha, double salario,
-            String cargo, String dtContratado, String situacao){
-        Funcionario f = new Funcionario(nome, cpf, dtNasc, codigo, telefone, matricula, senha, salario, CargoFuncionario.valueOf(cargo));
-        f.setDtContratado(dtContratado);
-        f.setCargo(cargo);
-        f.setSituacao(situacao);
-        
+            String cargo, String dtContratado, String situacao, String sexo, String foto){
+        Funcionario f = new Funcionario(nome, cpf, dtNasc, codigo, telefone, sexo, matricula, senha, salario, 
+                        CargoFuncionario.valueOf(cargo), SituacaoFuncionario.valueOf(situacao), dtContratado);
+        f.setFoto(foto);
         //if(funcionarioDAO.validaAtualizacao(f)){
             return funcionarioDAO.atualizaFuncionario(f);
         //}

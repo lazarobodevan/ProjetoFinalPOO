@@ -24,17 +24,21 @@ public class Funcionario extends Pessoa{
     private String dtContratado;
     private SituacaoFuncionario situacao;
     private CargoFuncionario cargo;
+    private String foto;
     
     
-    public Funcionario(String nome, String cpf, String dtNasc, int codigo, String telefone, int matricula, String senha, double salario, 
-            CargoFuncionario cargo) {
-       super(nome, cpf, dtNasc, codigo, telefone);
+    public Funcionario(String nome, String cpf, String dtNasc, int codigo, String telefone, String sexo, int matricula, String senha, double salario, 
+            CargoFuncionario cargo, SituacaoFuncionario situacao, String dtContratado) {
+       super(nome, cpf, dtNasc, codigo, telefone, sexo);
        this.matricula = matricula;
        this.senha = senha;
        this.salario = salario;
        this.situacao = SituacaoFuncionario.TRABALHANDO;
        this.cargo = cargo;
        this.dtContratado = "00/00/0000";
+       this.foto = "src/imagens/unknown.png";
+       this.situacao = situacao;
+       this.dtContratado = dtContratado;
     }
     
 
@@ -69,6 +73,10 @@ public class Funcionario extends Pessoa{
     public String getDtContratacao(){
         return this.dtContratado;
     }
+    
+    public String getFoto(){
+        return this.foto;
+    }
 //-------------------------------------------------
 
     public void setSenha(String senha) {
@@ -95,5 +103,9 @@ public class Funcionario extends Pessoa{
     
     public void setCargo(String cargo){
         this.cargo = CargoFuncionario.valueOf(cargo);
+    }
+    
+    public void setFoto(String foto){
+        this.foto = foto;
     }
 }

@@ -22,8 +22,8 @@ public class ControleCliente {
         clienteDAO = new ClienteDAO();
     }
     
-    public boolean cadastrarCliente(String nome, String cpf, String dtNasc, int codigo, String telefone){
-        Cliente c = new Cliente(nome, cpf, dtNasc, codigo, telefone);
+    public boolean cadastrarCliente(String nome, String cpf, String dtNasc, int codigo, String telefone, String sexo){
+        Cliente c = new Cliente(nome, cpf, dtNasc, codigo, telefone, sexo);
         Cliente cExistente = clienteDAO.pesquisaClienteCpf(cpf);
         if(cExistente != null){
             return false;
@@ -41,8 +41,8 @@ public class ControleCliente {
         return clienteDAO.listarClientesCadastrados();
     }
     
-    public boolean atualizarCadastroCliente(String nome, String cpf, String dtNasc, int codigo, String telefone){
-        Cliente c = new Cliente(nome, cpf, dtNasc, codigo, telefone);
+    public boolean atualizarCadastroCliente(String nome, String cpf, String dtNasc, int codigo, String telefone, String sexo){
+        Cliente c = new Cliente(nome, cpf, dtNasc, codigo, telefone, sexo);
         //Cliente cExistente = clienteDAO.pesquisaClienteCpf(cpf);
 //        if(cExistente != null){
 //            return false;
@@ -55,6 +55,18 @@ public class ControleCliente {
     public Cliente pesquisaClienteCpf(String cpfParam){
         try{
             return clienteDAO.pesquisaClienteCpf(cpfParam);
+        }catch(NullPointerException ex){
+            Logger.getLogger(ControleCliente.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }catch(NumberFormatException ex){
+            Logger.getLogger(ControleCliente.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public Cliente pesquisaClienteId(int id){
+        try{
+            return clienteDAO.pesquisaClienteId(id);
         }catch(NullPointerException ex){
             Logger.getLogger(ControleCliente.class.getName()).log(Level.SEVERE, null, ex);
             return null;

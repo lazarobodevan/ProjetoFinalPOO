@@ -7,6 +7,8 @@ package br.ufv.visaoGUI.funcionario;
 
 import br.ufv.visaoGUI.cliente.TelaCliente;
 import br.ufv.visaoGUI.produto.TelaProduto;
+import br.ufv.visaoGUI.venda.TelaRequestCliente;
+import br.ufv.visaoGUI.venda.TelaVenda;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -26,6 +28,7 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
      */
     private TelaLogin tl = new TelaLogin();
     private TelaPrincipalGerente t;
+    private TelaRequestCliente trc;
     public TelaPrincipalCaixa() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -146,6 +149,11 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
 
         mniVenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/movimentos.png"))); // NOI18N
         mniVenda.setText("Realizar venda");
+        mniVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniVendaActionPerformed(evt);
+            }
+        });
         jMenu2.add(mniVenda);
 
         mniEstoque.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Produtos.png"))); // NOI18N
@@ -209,6 +217,12 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
             tl.setVisible(true);
         }
     }//GEN-LAST:event_btnSairActionPerformed
+
+    private void mniVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniVendaActionPerformed
+        trc = new TelaRequestCliente();
+        trc.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_mniVendaActionPerformed
 
     /**
      * @param args the command line arguments

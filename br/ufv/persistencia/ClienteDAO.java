@@ -25,13 +25,25 @@ import java.util.logging.Logger;
  */
 public class ClienteDAO {
    private Connection conexao;
+   private ArrayList<Cliente> clientes;
     
     public ClienteDAO(){
         conexao = new ConexaoMySQL().getConexaoMySQL();
+        if(clientes == null){
+            clientes = this.listarClientesCadastrados();
+        }
+    }
+    
+    public Cliente pesquisaClienteId(int id){
+        for(Cliente c: clientes){
+            if(c.getCodigo() == id)
+                return c;
+        }
+        return null;
     }
     
     public boolean cadastraCliente(Cliente c) throws ParseException{
-        String sql =  "INSERT INTO cliente(idCliente, nome, cpf, dtNasc, telefone) VALUES(?,?,?,?,?)";
+        String sql =  "INSERT INTO cliente(idCliente, nome, cpf, dtNasc, telefone, sexo) VALUES(?,?,?,?,?,?)";
         PreparedStatement stmt;
         try {
             stmt = conexao.prepareStatement(sql);
@@ -44,6 +56,7 @@ public class ClienteDAO {
             String dtNascBanco = ano+"-"+mes+"-"+dia;
             stmt.setString(4, dtNascBanco);
             stmt.setString(5, c.getTelefone());
+            stmt.setString(6, c.getSexo());
             stmt.execute();
             stmt.close();
             return true;
@@ -56,7 +69,7 @@ public class ClienteDAO {
     }
     
     public Cliente pesquisaClienteCpf(String cpfParam){
-        String sql = "SELECT idCliente, nome, cpf, date_format(dtNasc, '%d/%m/%Y') AS 'dtNasc', telefone FROM cliente WHERE cpf LIKE '"+cpfParam+"'";
+        String sql = "SELECT idCliente, nome, cpf, date_format(dtNasc, '%d/%m/%Y') AS 'dtNasc', telefone, sexo FROM cliente WHERE cpf LIKE '"+cpfParam+"'";
         System.out.println(sql);
         PreparedStatement stmt;
         Cliente c = null;
@@ -69,8 +82,9 @@ public class ClienteDAO {
                 String cpf = rs.getString("cpf");
                 String dtNasc = rs.getString("dtNasc");
                 String telefone = rs.getString("telefone");
+                String sexo = rs.getString("sexo");
 
-                c = new Cliente(nome, cpf, dtNasc, id, telefone);
+                c = new Cliente(nome, cpf, dtNasc, id, telefone, sexo);
             }
             stmt.close();
             return c;
@@ -83,7 +97,7 @@ public class ClienteDAO {
     
     public ArrayList<Cliente> listarClientesCadastrados(){
         ArrayList<Cliente> clientes =  new ArrayList<>();
-        String sql = "SELECT idCliente, nome, cpf, date_format(dtNasc, '%d/%m/%Y') AS 'dtNasc', telefone FROM cliente";
+        String sql = "SELECT idCliente, nome, cpf, date_format(dtNasc, '%d/%m/%Y') AS 'dtNasc', telefone, sexo FROM cliente";
         PreparedStatement stmt;
         try {
             stmt = conexao.prepareStatement(sql);
@@ -94,8 +108,9 @@ public class ClienteDAO {
                 String cpf = rs.getString("cpf");
                 String dtNasc = rs.getString("dtNasc");
                 String telefone = rs.getString("telefone");
+                String sexo = rs.getString("sexo");
 
-                Cliente c = new Cliente(nome, cpf, dtNasc, id, telefone);
+                Cliente c = new Cliente(nome, cpf, dtNasc, id, telefone, sexo);
                 clientes.add(c);
             }
             stmt.close();
@@ -108,7 +123,7 @@ public class ClienteDAO {
     }
     
     public boolean atualizarCadastroCliente(Cliente c){
-        String sql =  "UPDATE cliente SET nome = ?, cpf = ?, dtNasc = ?, telefone = ? WHERE idCliente = ?";
+        String sql =  "UPDATE cliente SET nome = ?, cpf = ?, dtNasc = ?, telefone = ?, sexo = ? WHERE idCliente = ?";
         PreparedStatement stmt;
         try {
             stmt = conexao.prepareStatement(sql);
@@ -120,7 +135,8 @@ public class ClienteDAO {
             String dtNascBanco = ano+"-"+mes+"-"+dia;
             stmt.setString(3, String.valueOf(dtNascBanco));
             stmt.setString(4, c.getTelefone());
-            stmt.setString(5, String.valueOf(c.getCodigo()));
+            stmt.setString(5, c.getSexo());
+            stmt.setString(6, String.valueOf(c.getCodigo()));
             
             stmt.execute();
             stmt.close();
@@ -159,8 +175,8 @@ public class ClienteDAO {
     public ArrayList filtrarClienteNome(String nomeParam){
         ArrayList<Cliente> clientes = new ArrayList<>();
         try {
-            String sql = "SELECT idCliente, nome, cpf, date_format(dtNasc, '%d/%m/%Y') AS 'dtNasc', telefone FROM cliente"
-                    + " WHERE nome LIKE '%"+nomeParam+"%'";
+            String sql = "SELECT idCliente, nome, cpf, date_format(dtNasc, '%d/%m/%Y') AS 'dtNasc', telefone, sexo FROM cliente"
+                    + " WHERE nome LIKE '%"+nomeParam+"%' ORDER BY nome";
             PreparedStatement stmt;
             stmt = conexao.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery(sql);
@@ -170,8 +186,9 @@ public class ClienteDAO {
                 String cpf = rs.getString("cpf");
                 String dtNasc = rs.getString("dtNasc");
                 String telefone = rs.getString("telefone");
+                String sexo = rs.getString("sexo");
 
-                Cliente c = new Cliente(nome, cpf, dtNasc, id, telefone);
+                Cliente c = new Cliente(nome, cpf, dtNasc, id, telefone, sexo);
                 clientes.add(c);
             }
             stmt.close();

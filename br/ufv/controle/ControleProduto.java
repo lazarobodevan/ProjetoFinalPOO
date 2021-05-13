@@ -34,7 +34,7 @@ public class ControleProduto {
     }
     
     public ArrayList<Produto> listarProdutosCadastrados(){
-        return produtoDAO.listarProdutosCadastrados();
+        return produtoDAO.listarProdutosCadastradosSql();
     }
     
     
@@ -44,7 +44,6 @@ public class ControleProduto {
             return null;
         }
         return produtoDAO.pesquisaProdutoCod(cod);
-        //produtoDAO.pesquisaProdutoCod(cod);
     }
     
     public boolean atualizarProduto(String nome, double preco, String categoria, int codigo, int qtdEstoque){

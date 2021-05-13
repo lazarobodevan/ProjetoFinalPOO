@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Cliente extends Pessoa{
     private ArrayList<Venda> compras;
-    public Cliente(String nome, String cpf, String dtNasc, int codigo, String telefone) {
-        super(nome, cpf, dtNasc, codigo, telefone);
+    public Cliente(String nome, String cpf, String dtNasc, int codigo, String telefone, String sexo) {
+        super(nome, cpf, dtNasc, codigo, telefone, sexo);
         compras = new ArrayList<>();
     }
     

@@ -20,10 +20,13 @@ import java.util.logging.Logger;
  */
 public class ProdutoDAO {
     private Connection conexao;
-    
+    private ArrayList<Produto> produtos;    
     
     public ProdutoDAO(){
         conexao = new ConexaoMySQL().getConexaoMySQL();
+        if(produtos == null){
+            produtos = listarProdutosCadastradosSql();
+        }
     }
     
     public boolean cadastraProduto(Produto p){
@@ -47,6 +50,13 @@ public class ProdutoDAO {
     }
     
     public Produto pesquisaProdutoCod(int codigo){
+        for(Produto p: produtos){
+            if(p.getCodigo() == codigo)
+                return p;
+        }
+        return null;
+    }
+    public Produto pesquisaProdutoCodSql(int codigo){
         String sql = "SELECT * FROM produto WHERE idProduto = "+codigo;
         System.out.println(sql);
         PreparedStatement stmt;
@@ -73,7 +83,7 @@ public class ProdutoDAO {
         return null;
     }
     
-    public ArrayList<Produto> listarProdutosCadastrados(){
+    public ArrayList<Produto> listarProdutosCadastradosSql(){
         ArrayList<Produto> ps = new ArrayList<>();
         
         String sql = "SELECT * FROM produto";
@@ -110,6 +120,7 @@ public class ProdutoDAO {
             stmt.setString(3, String.valueOf(p.getQtdEstoque()));
             stmt.setString(4, p.getCategoria());
             stmt.setString(5, String.valueOf(p.getCodigo()));
+            produtos = listarProdutosCadastradosSql();
 
             stmt.execute();
             stmt.close();

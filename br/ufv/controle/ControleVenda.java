@@ -5,6 +5,8 @@
  */
 package br.ufv.controle;
 
+import br.ufv.modelo.Cliente;
+import br.ufv.modelo.Produto;
 import br.ufv.modelo.Venda;
 import br.ufv.persistencia.VendaDAO;
 import java.util.ArrayList;
@@ -18,20 +20,40 @@ import javax.swing.JOptionPane;
  */
 public class ControleVenda {
     private VendaDAO vendaDAO;
-    private Scanner s;
+    private ControleProduto controleProduto;
     
     public ControleVenda(){
         vendaDAO = new VendaDAO();
-        s = new Scanner(System.in);
+        controleProduto = new ControleProduto();
     }
     
-    public void cadastraVenda(double precoTotal, String cliente, ArrayList<String> produtos, Calendar data){
-        int codigo = vendaDAO.listarVendasCadastradas().size()+1;
-        Venda v = new Venda(precoTotal, codigo, cliente, produtos, data);
-        
-        vendaDAO.cadastraVenda(v);
-        JOptionPane.showMessageDialog (null, "Venda cadastrada!");
-        
+    public int getIdVenda(){
+        return vendaDAO.getIdVenda();
+    }
+    
+    public boolean setProdutosVenda(ArrayList<Produto> p){
+        if(p!= null){
+            vendaDAO.setProdutosVenda(p);
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public Produto getProdutoId(int id){
+        return controleProduto.pesquisaProdutoCod(id);
+    }
+    
+    public ArrayList<Produto> getProdutosVenda(){
+        return vendaDAO.getProdutosVenda();
+    }
+    
+    public boolean cadastraVenda(Venda v){
+        return vendaDAO.cadastraVendaSql(v);
+    }
+    
+    public ArrayList<Venda> getVendasCadastradas(){
+        return vendaDAO.getVendasCadastradas();
     }
     
 }

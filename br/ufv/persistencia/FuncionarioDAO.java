@@ -7,6 +7,7 @@ package br.ufv.persistencia;
 
 import br.ufv.modelo.CargoFuncionario;
 import br.ufv.modelo.Funcionario;
+import br.ufv.modelo.SituacaoFuncionario;
 import static br.ufv.persistencia.ConexaoMySQL.getConexaoMySQL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,7 +40,7 @@ public class FuncionarioDAO {
     }
     
     public boolean contrataFuncionario(Funcionario f) throws SQLException{
-        String sql =  "INSERT INTO funcionario(nome, cpf, dtNasc, idFuncionario, telefone, matricula, senha, salario, situacao, cargo, dtContratado) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+        String sql =  "INSERT INTO funcionario(nome, cpf, dtNasc, idFuncionario, telefone, matricula, senha, salario, situacao, cargo, dtContratado, sexo, foto) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         PreparedStatement stmt;
         //try {
             stmt = conexao.prepareStatement(sql);
@@ -62,6 +63,8 @@ public class FuncionarioDAO {
             ano = f.getDtContratacao().substring(6);
             String dtContratcBanco = ano+"-"+mes+"-"+dia;
             stmt.setString(11, String.valueOf(dtContratcBanco));
+            stmt.setString(12, String.valueOf(f.getSexo()));
+            stmt.setString(13, String.valueOf(f.getFoto()));
             stmt.execute();
             stmt.close();
             funcionarios.add(f);
@@ -76,7 +79,8 @@ public class FuncionarioDAO {
     
     public boolean atualizaFuncionario(Funcionario f){
         String sql =  "UPDATE funcionario SET nome = ?, cpf = ?, dtNasc = ?, telefone = ?, "
-                + "matricula = ?, senha = ?, salario = ?, situacao = ?, cargo = ? WHERE idFuncionario = "+f.getCodigo();
+                + "matricula = ?, senha = ?, salario = ?, situacao = ?, cargo = ?, dtContratado = ?,"
+                + " sexo = ?, foto = ? WHERE idFuncionario = "+f.getCodigo();
         PreparedStatement stmt;
         
         try {
@@ -94,6 +98,13 @@ public class FuncionarioDAO {
             stmt.setString(7, String.valueOf(f.getSalario()));
             stmt.setString(8, String.valueOf(f.getSituacao()));
             stmt.setString(9, String.valueOf(f.getCargo()));
+            dia = f.getDtNasc().substring(0,2);
+            mes = f.getDtNasc().substring(3,5);
+            ano = f.getDtNasc().substring(6);
+            String dtContratBanco = ano+"-"+mes+"-"+dia;
+            stmt.setString(10, String.valueOf(dtContratBanco));
+            stmt.setString(11, String.valueOf(f.getSexo()));
+            stmt.setString(12, String.valueOf(f.getFoto()));
             stmt.execute();
             stmt.close();
             funcionarios = this.getFuncionariosSQL();
@@ -138,7 +149,7 @@ public class FuncionarioDAO {
     public ArrayList<Funcionario> getFuncionariosSQL(){
         String sql = "SELECT idFuncionario, nome, cpf, date_format(dtNasc, '%d/%m/%Y') AS 'dtNasc', "
                 + "telefone, matricula, senha, salario, cargo, date_format(dtContratado, '%d/%m/%Y') AS 'dtContratado', "
-                + " situacao FROM funcionario";
+                + " situacao, sexo, foto FROM funcionario";
         
         System.out.println(sql);
         PreparedStatement stmt;
@@ -158,11 +169,13 @@ public class FuncionarioDAO {
                 double salario = rs.getDouble("salario");
                 CargoFuncionario cargo = CargoFuncionario.valueOf(rs.getString("cargo").toUpperCase());
                 String dtContrat = rs.getString("dtContratado");
-                String situacao = rs.getString("situacao");
+                SituacaoFuncionario situacao = SituacaoFuncionario.valueOf(rs.getString("situacao").toUpperCase());
+                String sexo = rs.getString("sexo");
+                String foto = rs.getString("foto");
 
-                f = new Funcionario(nome, cpf, dtNasc, codigo, telefone, matricula, senha, salario, cargo);
-                f.setDtContratado(dtContrat);
-                f.setSituacao(situacao.toUpperCase());
+                f = new Funcionario(nome, cpf, dtNasc, codigo, telefone, sexo, matricula, senha, salario, 
+                        cargo, situacao, dtContrat);
+                f.setFoto(foto);
                 funcs.add(f);
             }
             stmt.close();
@@ -197,8 +210,13 @@ public class FuncionarioDAO {
                 String senha = rs.getString("senha");
                 double salario = rs.getDouble("salario");
                 CargoFuncionario cargo = CargoFuncionario.valueOf(rs.getString("cargo").toUpperCase());
+                String dtContrat = rs.getString("dtContratado");
+                SituacaoFuncionario situacao = SituacaoFuncionario.valueOf(rs.getString("situacao").toUpperCase());
+                String sexo = rs.getString("sexo");
+                //String foto = rs.getString("foto");
 
-                f = new Funcionario(nome, cpf, dtNasc, codigo, telefone, matricula, senha, salario, cargo);
+                f = new Funcionario(nome, cpf, dtNasc, codigo, telefone, sexo, matricula, senha, salario, 
+                        cargo, situacao, dtContrat);
             }
             stmt.close();
             return f;
@@ -229,8 +247,13 @@ public class FuncionarioDAO {
                 String senha = rs.getString("senha");
                 double salario = rs.getDouble("salario");
                 CargoFuncionario cargo = CargoFuncionario.valueOf(rs.getString("cargo").toUpperCase());
+                String dtContrat = rs.getString("dtContratado");
+                SituacaoFuncionario situacao = SituacaoFuncionario.valueOf(rs.getString("situacao").toUpperCase());
+                String sexo = rs.getString("sexo");
+                String foto = rs.getString("foto");
 
-                f = new Funcionario(nome, cpf, dtNasc, codigo, telefone, matricula, senha, salario, cargo);
+                f = new Funcionario(nome, cpf, dtNasc, codigo, telefone, sexo, matricula, senha, salario, 
+                        cargo, situacao, dtContrat);
             }
             stmt.close();
             return f;
