@@ -5,6 +5,7 @@
  */
 package br.ufv.visaoGUI.funcionario;
 
+import br.ufv.visaoGUI.Dashboard.TelaInicialDashboard;
 import br.ufv.visaoGUI.cliente.TelaCliente;
 import br.ufv.visaoGUI.produto.TelaProduto;
 import java.awt.event.ActionEvent;
@@ -58,7 +59,6 @@ public class TelaPrincipalGerente extends javax.swing.JFrame {
         lblData = new javax.swing.JLabel();
         lblHora = new javax.swing.JLabel();
         btnSair = new javax.swing.JButton();
-        btnEntradaSaida = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         lblNome = new javax.swing.JLabel();
@@ -73,6 +73,7 @@ public class TelaPrincipalGerente extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         mniGerenProduto = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,15 +90,19 @@ public class TelaPrincipalGerente extends javax.swing.JFrame {
             }
         });
 
-        btnEntradaSaida.setText("Entrada/Saída");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(23, 0, 255));
+        jLabel3.setText("Bem-Vind@");
 
-        jLabel3.setText("Bem-Vinda@");
+        lblNome.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblNome.setForeground(new java.awt.Color(59, 0, 255));
+        lblNome.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblNome, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+            .addComponent(lblNome, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -138,6 +143,11 @@ public class TelaPrincipalGerente extends javax.swing.JFrame {
         jMenu3.add(mniCaixa);
 
         mniGerEstoque.setText("Geren. de estoque");
+        mniGerEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniGerEstoqueActionPerformed(evt);
+            }
+        });
         jMenu3.add(mniGerEstoque);
 
         jMenu1.add(jMenu3);
@@ -170,6 +180,15 @@ public class TelaPrincipalGerente extends javax.swing.JFrame {
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/analytics.png"))); // NOI18N
         jMenu2.setText("Estatísticas");
+
+        jMenuItem1.setText("Geral");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -183,8 +202,6 @@ public class TelaPrincipalGerente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnSair)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEntradaSaida)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -207,9 +224,7 @@ public class TelaPrincipalGerente extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(lblHora, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSair)
-                    .addComponent(btnEntradaSaida))
+                .addComponent(btnSair)
                 .addContainerGap(75, Short.MAX_VALUE))
         );
 
@@ -240,6 +255,16 @@ public class TelaPrincipalGerente extends javax.swing.JFrame {
        new TelaProduto().setVisible(true);
        this.dispose();
     }//GEN-LAST:event_mniGerenProdutoActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        TelaInicialDashboard d = new TelaInicialDashboard();
+        d.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void mniGerEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniGerEstoqueActionPerformed
+       new TelaProduto().setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_mniGerEstoqueActionPerformed
 
     /**
      * @param args the command line arguments
@@ -278,7 +303,6 @@ public class TelaPrincipalGerente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEntradaSaida;
     private javax.swing.JButton btnSair;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
@@ -287,6 +311,7 @@ public class TelaPrincipalGerente extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblData;
     private javax.swing.JLabel lblHora;

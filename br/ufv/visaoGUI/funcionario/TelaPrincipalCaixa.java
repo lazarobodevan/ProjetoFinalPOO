@@ -35,7 +35,7 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
         showDate();
         showTime();
         try{
-            lblBemVindo.setText("Bem Vind@, "+ tl.getFuncionarioLogado().getNome());
+            lblNome.setText(tl.getFuncionarioLogado().getNome());
         }catch(NullPointerException e){
             lblBemVindo.setText("Bem Vind@");
             Logger.getLogger(TelaPrincipalCaixa.class.getName()).log(Level.SEVERE, null, e);
@@ -72,6 +72,7 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
         btnSair = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         lblBemVindo = new javax.swing.JLabel();
+        lblNome = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mniCliente = new javax.swing.JMenuItem();
@@ -98,27 +99,27 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
 
         lblBemVindo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblBemVindo.setForeground(new java.awt.Color(23, 0, 255));
-        lblBemVindo.setText("Bem Vind@, ");
+        lblBemVindo.setText("Bem Vind@");
+        lblBemVindo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        lblNome.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblNome.setForeground(new java.awt.Color(0, 40, 255));
+        lblNome.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 113, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(lblBemVindo)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addComponent(lblNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblBemVindo, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(lblBemVindo)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(lblBemVindo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(lblNome, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/mais.png"))); // NOI18N
@@ -174,7 +175,7 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
                     .addComponent(lblHora, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
                     .addComponent(lblData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSair))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55))
         );
@@ -182,15 +183,15 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
+                .addComponent(lblData, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblData, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblHora, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(17, 17, 17)
-                        .addComponent(btnSair)))
-                .addContainerGap(69, Short.MAX_VALUE))
+                        .addComponent(btnSair))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         pack();
@@ -270,6 +271,7 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
     private javax.swing.JLabel lblBemVindo;
     private javax.swing.JLabel lblData;
     private javax.swing.JLabel lblHora;
+    private javax.swing.JLabel lblNome;
     private javax.swing.JMenuItem mniCliente;
     private javax.swing.JMenuItem mniEstoque;
     private javax.swing.JMenuItem mniProduto;

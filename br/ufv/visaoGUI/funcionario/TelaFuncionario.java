@@ -11,6 +11,7 @@ import br.ufv.modelo.CargoFuncionario;
 import br.ufv.modelo.Funcionario;
 import br.ufv.modelo.SituacaoFuncionario;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.text.MaskFormatter;
 
 /**
@@ -76,6 +78,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
         
     }
     
+       
     public void setDataTable(Funcionario f){        
         String codigo = String.valueOf(f.getCodigo());
         String nome = f.getNome();
@@ -184,8 +187,7 @@ public class TelaFuncionario extends javax.swing.JFrame {
 
         jLabel7.setText("Situação");
 
-        cbSituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trabalhando", "Advertencia", "Afastado", "Atestado" }));
-        cbSituacao.setSelectedIndex(-1);
+        cbSituacao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trabalhando", "Advertencia", "Afastado", "Atestado", "Demitido" }));
 
         jLabel8.setText("Data de Contratação");
 
