@@ -407,6 +407,12 @@ public class TelaVenda extends javax.swing.JFrame {
     private void btnFinalizarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarVendaActionPerformed
         TelaRequestCliente trc = new TelaRequestCliente();
         ArrayList<Integer> qtds = new ArrayList<>();
+        
+        if(pVenda.size() == 0){
+            JOptionPane.showMessageDialog(null, "Insira pelo menos 1 produto!", "Erro",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         for(int i = 0; i < pVenda.size(); i++){
             qtds.add(i,0);
         }

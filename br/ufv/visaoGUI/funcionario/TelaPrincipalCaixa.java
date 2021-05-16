@@ -159,6 +159,11 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
 
         mniEstoque.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Produtos.png"))); // NOI18N
         mniEstoque.setText("Verificar estoque");
+        mniEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniEstoqueActionPerformed(evt);
+            }
+        });
         jMenu2.add(mniEstoque);
 
         jMenuBar1.add(jMenu2);
@@ -226,6 +231,12 @@ public class TelaPrincipalCaixa extends javax.swing.JFrame {
         trc.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_mniVendaActionPerformed
+
+    private void mniEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniEstoqueActionPerformed
+        this.dispose();
+        TelaProduto t = new TelaProduto();
+        t.setVisible(true);
+    }//GEN-LAST:event_mniEstoqueActionPerformed
 
     /**
      * @param args the command line arguments
